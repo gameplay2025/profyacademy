@@ -1,109 +1,757 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LMS - Login</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
-<body class="min-h-screen bg-gray-100 flex items-center justify-center">
-  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-    <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">Learning Management System</h1>
-    
-    <!-- Login Form -->
-    <form id="loginForm" class="space-y-4">
-      <div>
-        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-        <input 
-          type="email" 
-          id="email" 
-          name="email" 
-          required
-          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="Enter your email"
-        >
-      </div>
-      
-      <div>
-        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-        <input 
-          type="password" 
-          id="password" 
-          name="password" 
-          required
-          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="Enter your password"
-        >
-      </div>
-      
-      <button 
-        type="submit" 
-        id="submitBtn"
-        class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        <span id="btnText">Sign In</span>
-        <span id="btnLoading" class="hidden">
-          <svg class="animate-spin h-5 w-5 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-        </span>
-      </button>
-    </form>
-    
-    <!-- Error Message Container -->
-    <div id="errorMessage" class="hidden mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-md text-sm"></div>
-  </div>
-
-  <script src="app.js"></script>
-  <script>
-    const loginForm = document.getElementById('loginForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const btnText = document.getElementById('btnText');
-    const btnLoading = document.getElementById('btnLoading');
-    const errorMessage = document.getElementById('errorMessage');
-
-    function setLoading(isLoading) {
-      submitBtn.disabled = isLoading;
-      btnText.classList.toggle('hidden', isLoading);
-      btnLoading.classList.toggle('hidden', !isLoading);
-    }
-
-    function showError(message) {
-      errorMessage.textContent = message;
-      errorMessage.classList.remove('hidden');
-    }
-
-    function hideError() {
-      errorMessage.classList.add('hidden');
-    }
-
-    loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      hideError();
-      
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      
-      setLoading(true);
-      
-      try {
-        const { user, error } = await login(email, password);
-        
-        if (error) {
-          showError(error.message || 'Invalid email or password');
-          setLoading(false);
-          return;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profy Academy</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cairo:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e88e5;
+            --primary-light: #64b5f6;
+            --primary-dark: #1565c0;
+            --bg: #f0f7ff;
+            --bg-card: #ffffff;
+            --text: #1a237e;
+            --text-muted: #5c6bc0;
+            --border: #bbdefb;
+            --shadow: 0 8px 32px rgba(30, 136, 229, 0.15);
+            --radius: 20px;
+            --font: 'Cairo', sans-serif;
         }
-        
-        // Redirect to dashboard on success
-        window.location.href = 'dashboard.html';
-      } catch (err) {
-        showError('Connection error. Please try again.');
-        setLoading(false);
-      }
-    });
-  </script>
+
+        [data-theme="dark"] {
+            --bg: #0d1b2a;
+            --bg-card: #1b263b;
+            --text: #e0f2ff;
+            --text-muted: #90caf9;
+            --border: #1e88e5;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        [dir="ltr"] {
+            --font: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            font-size: 18px;
+            transition: all 0.4s ease;
+        }
+
+        /* Loader */
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #1565c0, #1e88e5, #42a5f5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-logo {
+            width: 200px;
+            margin-bottom: 40px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .loader-bar-container {
+            width: 300px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .loader-bar {
+            height: 100%;
+            width: 0%;
+            background: white;
+            border-radius: 10px;
+            transition: width 0.3s;
+        }
+
+        .loader-percent {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Language Popup */
+        .lang-popup-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .lang-popup-overlay.hidden {
+            display: none;
+        }
+
+        .lang-popup {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 40px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .lang-popup h2 {
+            margin-bottom: 10px;
+            font-size: 24px;
+            color: var(--primary-dark);
+        }
+
+        .lang-popup p {
+            margin-bottom: 25px;
+            color: var(--text-muted);
+        }
+
+        .lang-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .lang-btn {
+            padding: 18px;
+            border: 2px solid var(--primary);
+            border-radius: 14px;
+            background: var(--bg-card);
+            color: var(--primary);
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: var(--font);
+        }
+
+        .lang-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Main */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .simple-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo-img {
+            height: 80px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .header-btn {
+            padding: 12px 20px;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            background: var(--bg-card);
+            color: var(--primary);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font);
+            transition: all 0.3s;
+        }
+
+        .header-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .dark-toggle {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Date Filter */
+        .filter-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .date-input {
+            padding: 14px 20px;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            background: var(--bg-card);
+            color: var(--text);
+            font-size: 18px;
+            font-family: var(--font);
+        }
+
+        .clear-btn {
+            padding: 14px 25px;
+            border: none;
+            border-radius: 12px;
+            background: #ef5350;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font);
+        }
+
+        /* Grade Tabs */
+        .grade-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .grade-tab {
+            padding: 18px 35px;
+            border: 3px solid var(--primary);
+            border-radius: var(--radius);
+            background: var(--bg-card);
+            color: var(--primary);
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: var(--font);
+        }
+
+        .grade-tab:hover {
+            transform: translateY(-3px);
+        }
+
+        .grade-tab.active {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            border-color: var(--primary-dark);
+        }
+
+        /* Lessons Grid */
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 25px;
+        }
+
+        .lesson-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .lesson-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .lesson-header {
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+        }
+
+        .lesson-header h3 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .lesson-date {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            background: #000;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .card-actions {
+            padding: 18px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            font-family: var(--font);
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-work {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+        }
+
+        .btn-correction {
+            background: linear-gradient(135deg, #2e7d32, #43a047);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: scale(1.02);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px;
+            color: var(--text-muted);
+            font-size: 20px;
+        }
+
+        /* Download Popup */
+        .download-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .download-overlay.active {
+            display: flex;
+        }
+
+        .download-popup {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            max-width: 450px;
+            width: 100%;
+            padding: 35px;
+            text-align: center;
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .download-popup h3 {
+            font-size: 22px;
+            margin-bottom: 25px;
+            color: var(--primary-dark);
+        }
+
+        .download-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .download-opt {
+            padding: 20px;
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            background: var(--bg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .download-opt:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: white;
+        }
+
+        .download-opt span.icon {
+            font-size: 28px;
+        }
+
+        .download-cancel {
+            margin-top: 20px;
+            padding: 14px 30px;
+            border: none;
+            background: #9e9e9e;
+            color: white;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            font-family: var(--font);
+        }
+
+        /* FAB & Help Modal */
+        .fab {
+            position: fixed;
+            bottom: 35px;
+            right: 35px;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            border: none;
+            font-size: 30px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(30, 136, 229, 0.4);
+            z-index: 999;
+        }
+
+        [dir="rtl"] .fab {
+            right: auto;
+            left: 35px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            max-width: 500px;
+            width: 100%;
+            padding: 35px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--bg);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 22px;
+        }
+
+        [dir="rtl"] .modal-close {
+            right: auto;
+            left: 15px;
+        }
+
+        .modal h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: var(--primary-dark);
+        }
+
+        .modal ol {
+            padding-inline-start: 25px;
+            font-size: 18px;
+        }
+
+        .modal li {
+            margin-bottom: 12px;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                font-size: 16px;
+            }
+
+            .logo-img {
+                height: 60px;
+            }
+
+            .lessons-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .grade-tab {
+                padding: 14px 25px;
+                font-size: 18px;
+            }
+
+            .fab {
+                width: 55px;
+                height: 55px;
+                font-size: 26px;
+                bottom: 20px;
+            }
+
+            [dir="rtl"] .fab {
+                left: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="loader" id="loader">
+        <img src="https://i.ibb.co/4ZCdQd13/logo-plateforme.png" alt="Profy Academy" class="loader-logo">
+        <div class="loader-bar-container">
+            <div class="loader-bar" id="loaderBar"></div>
+        </div>
+        <div class="loader-percent" id="loaderPercent">0%</div>
+    </div>
+
+    <div class="lang-popup-overlay" id="langPopup">
+        <div class="lang-popup">
+            <h2>🌍 اختر اللغة / Choose Language</h2>
+            <p>Choisissez votre langue préférée</p>
+            <div class="lang-buttons">
+                <button class="lang-btn" data-lang="ar">العربية</button>
+                <button class="lang-btn" data-lang="fr">Français</button>
+                <button class="lang-btn" data-lang="en">English</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <header class="simple-header">
+            <img src="https://i.ibb.co/4ZCdQd13/logo-plateforme.png" alt="Profy Academy" class="logo-img">
+            <div class="header-actions">
+                <button class="header-btn" id="changeLangBtn" data-i18n="changeLang">تغيير اللغة</button>
+                <button class="header-btn dark-toggle" id="darkToggle">🌙</button>
+            </div>
+        </header>
+
+        <div class="filter-section">
+            <input type="date" class="date-input" id="dateFilter">
+            <button class="clear-btn" id="clearDate" data-i18n="clearDate">مسح</button>
+        </div>
+
+        <div class="grade-tabs">
+            <button class="grade-tab active" data-grade="5" data-i18n="grade5">السنة الخامسة</button>
+            <button class="grade-tab" data-grade="6" data-i18n="grade6">السنة السادسة</button>
+            <button class="grade-tab" data-grade="7" data-i18n="grade7">السنة السابعة</button>
+        </div>
+        <div class="lessons-grid" id="lessonsGrid"></div>
+    </div>
+
+    <button class="fab" id="helpBtn">?</button>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <button class="modal-close" id="modalClose">×</button>
+            <h2 data-i18n="helpTitle">كيفية الاستخدام؟</h2>
+            <ol>
+                <li data-i18n="helpStep1">اختر مستواك الدراسي.</li>
+                <li data-i18n="helpStep2">شاهد الفيديو.</li>
+                <li data-i18n="helpStep3">حمّل العمل أو شاهده على فيسبوك.</li>
+                <li data-i18n="helpStep4">تحقق من الإصلاح.</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="download-overlay" id="downloadOverlay">
+        <div class="download-popup">
+            <h3 id="downloadTitle" data-i18n="chooseOption">اختر طريقة الوصول</h3>
+            <div class="download-options">
+                <a href="#" class="download-opt" id="facebookOpt"><span class="icon">📘</span><span
+                        data-i18n="viewFacebook">مشاهدة على فيسبوك</span></a>
+                <a href="#" class="download-opt" id="downloadOpt"><span class="icon">📥</span><span
+                        data-i18n="downloadFile">تحميل الملف</span></a>
+            </div>
+            <button class="download-cancel" id="downloadCancel" data-i18n="cancel">إلغاء</button>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            ar: { grade5: "السنة الخامسة", grade6: "السنة السادسة", grade7: "السنة السابعة", helpTitle: "كيفية الاستخدام؟", helpStep1: "اختر مستواك الدراسي.", helpStep2: "شاهد الفيديو.", helpStep3: "حمّل العمل أو شاهده على فيسبوك.", helpStep4: "تحقق من الإصلاح.", work: "📄 العمل", correction: "✅ الإصلاح", changeLang: "تغيير اللغة", clearDate: "مسح", chooseOption: "اختر طريقة الوصول", viewFacebook: "مشاهدة على فيسبوك", downloadFile: "تحميل الملف", cancel: "إلغاء", noResults: "لا توجد دروس في هذا التاريخ" },
+            fr: { grade5: "5ème année", grade6: "6ème année", grade7: "7ème année", helpTitle: "Comment utiliser ?", helpStep1: "Choisissez votre niveau.", helpStep2: "Regardez la vidéo.", helpStep3: "Téléchargez ou consultez sur Facebook.", helpStep4: "Vérifiez avec la correction.", work: "📄 Devoir", correction: "✅ Correction", changeLang: "Changer la langue", clearDate: "Effacer", chooseOption: "Choisissez une option", viewFacebook: "Voir sur Facebook", downloadFile: "Télécharger le fichier", cancel: "Annuler", noResults: "Aucune leçon à cette date" },
+            en: { grade5: "5th Grade", grade6: "6th Grade", grade7: "7th Grade", helpTitle: "How to use?", helpStep1: "Select your grade.", helpStep2: "Watch the video.", helpStep3: "Download or view on Facebook.", helpStep4: "Check with correction.", work: "📄 Work", correction: "✅ Correction", changeLang: "Change Language", clearDate: "Clear", chooseOption: "Choose an option", viewFacebook: "View on Facebook", downloadFile: "Download File", cancel: "Cancel", noResults: "No lessons on this date" }
+        };
+
+        let lessons = {};
+        let currentLang = 'ar';
+        let currentGrade = 5;
+        let selectedDate = '';
+
+        // Load lessons from JSON
+        fetch('lessons.json').then(r => r.json()).then(data => { lessons = data; renderLessons(); }).catch(() => { lessons = { "5": [], "6": [], "7": [] }; renderLessons(); });
+
+        // Loading
+        let progress = 0;
+        const loadingInterval = setInterval(() => {
+            progress += Math.random() * 15 + 5;
+            if (progress >= 100) { progress = 100; clearInterval(loadingInterval); setTimeout(() => document.getElementById('loader').classList.add('hidden'), 300); }
+            document.getElementById('loaderBar').style.width = progress + '%';
+            document.getElementById('loaderPercent').textContent = Math.floor(progress) + '%';
+        }, 200);
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.body.style.fontFamily = lang === 'ar' ? "'Cairo', sans-serif" : "'Inter', sans-serif";
+            document.querySelectorAll('[data-i18n]').forEach(el => { if (translations[lang][el.dataset.i18n]) el.textContent = translations[lang][el.dataset.i18n]; });
+            renderLessons();
+        }
+
+        function renderLessons() {
+            const t = translations[currentLang];
+            let data = lessons[currentGrade] || [];
+            if (selectedDate) data = data.filter(l => l.date === selectedDate);
+            if (data.length === 0) {
+                document.getElementById('lessonsGrid').innerHTML = `<div class="no-results">${t.noResults}</div>`;
+                return;
+            }
+            document.getElementById('lessonsGrid').innerHTML = data.map(lesson => `
+                <div class="lesson-card">
+                    <div class="lesson-header"><h3>${lesson.title[currentLang]}</h3><div class="lesson-date">📅 ${lesson.date}</div></div>
+                    <div class="video-container"><iframe src="https://www.youtube.com/embed/${lesson.video}" allowfullscreen></iframe></div>
+                    <div class="card-actions">
+                        <button class="btn btn-work" onclick="openDownload('work', ${lesson.id})">${t.work}</button>
+                        <button class="btn btn-correction" onclick="openDownload('correction', ${lesson.id})">${t.correction}</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function setGrade(grade) { currentGrade = grade; document.querySelectorAll('.grade-tab').forEach(t => t.classList.toggle('active', t.dataset.grade == grade)); renderLessons(); }
+
+        let currentDownload = { type: '', id: 0 };
+        function openDownload(type, id) {
+            currentDownload = { type, id };
+            document.getElementById('downloadOverlay').classList.add('active');
+        }
+        function getLesson(id) { for (let g in lessons) { const l = lessons[g].find(x => x.id === id); if (l) return l; } return null; }
+
+        document.getElementById('facebookOpt').addEventListener('click', e => {
+            e.preventDefault();
+            const l = getLesson(currentDownload.id);
+            if (l) window.open(currentDownload.type === 'work' ? l.fbWorkUrl : l.fbCorrectionUrl, '_blank');
+            document.getElementById('downloadOverlay').classList.remove('active');
+        });
+        document.getElementById('downloadOpt').addEventListener('click', e => {
+            e.preventDefault();
+            const l = getLesson(currentDownload.id);
+            if (l) { const a = document.createElement('a'); a.href = currentDownload.type === 'work' ? l.workUrl : l.correctionUrl; a.download = ''; a.click(); }
+            document.getElementById('downloadOverlay').classList.remove('active');
+        });
+        document.getElementById('downloadCancel').addEventListener('click', () => document.getElementById('downloadOverlay').classList.remove('active'));
+        document.getElementById('downloadOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) e.currentTarget.classList.remove('active'); });
+
+        document.getElementById('dateFilter').addEventListener('change', e => { selectedDate = e.target.value; renderLessons(); });
+        document.getElementById('clearDate').addEventListener('click', () => { document.getElementById('dateFilter').value = ''; selectedDate = ''; renderLessons(); });
+
+        document.querySelectorAll('.grade-tab').forEach(tab => tab.addEventListener('click', () => setGrade(parseInt(tab.dataset.grade))));
+        document.getElementById('darkToggle').addEventListener('click', () => {
+            const isDark = document.body.hasAttribute('data-theme');
+            if (isDark) { document.body.removeAttribute('data-theme'); localStorage.setItem('theme', 'light'); document.getElementById('darkToggle').textContent = '🌙'; }
+            else { document.body.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); document.getElementById('darkToggle').textContent = '☀️'; }
+        });
+
+        document.getElementById('helpBtn').addEventListener('click', () => document.getElementById('modalOverlay').classList.add('active'));
+        document.getElementById('modalClose').addEventListener('click', () => document.getElementById('modalOverlay').classList.remove('active'));
+        document.getElementById('modalOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) e.currentTarget.classList.remove('active'); });
+
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => { setLanguage(btn.dataset.lang); document.getElementById('langPopup').classList.add('hidden'); }));
+        document.getElementById('changeLangBtn').addEventListener('click', () => document.getElementById('langPopup').classList.remove('hidden'));
+
+        // Init
+        if (localStorage.getItem('theme') === 'dark') { document.body.setAttribute('data-theme', 'dark'); document.getElementById('darkToggle').textContent = '☀️'; }
+        setLanguage('ar');
+    </script>
 </body>
+
 </html>

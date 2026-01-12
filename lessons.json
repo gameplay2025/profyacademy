@@ -1,0 +1,17 @@
+{
+  "5": [
+    { "id": 1, "date": "2026-01-05", "title": { "fr": "Les nombres décimaux", "en": "Decimal Numbers", "ar": "الأعداد العشرية" }, "video": "dQw4w9WgXcQ", "workUrl": "#", "correctionUrl": "#", "fbWorkUrl": "https://facebook.com/groups/profyacademy", "fbCorrectionUrl": "https://facebook.com/groups/profyacademy" },
+    { "id": 2, "date": "2026-01-08", "title": { "fr": "La géométrie", "en": "Geometry", "ar": "الهندسة" }, "video": "dQw4w9WgXcQ", "workUrl": "#", "correctionUrl": "#", "fbWorkUrl": "https://facebook.com/groups/profyacademy", "fbCorrectionUrl": "https://facebook.com/groups/profyacademy" },
+    { "id": 3, "date": "2026-01-11", "title": { "fr": "Les fractions", "en": "Fractions", "ar": "الكسور" }, "video": "dQw4w9WgXcQ", "workUrl": "#", "correctionUrl": "#", "fbWorkUrl": "https://facebook.com/groups/profyacademy", "fbCorrectionUrl": "https://facebook.com/groups/profyacademy" }
+  ],
+  "6": [
+    { "id": 4, "date": "2026-01-06", "title": { "fr": "L'algèbre", "en": "Algebra", "ar": "الجبر" }, "video": "dQw4w9WgXcQ", "workUrl": "#", "correctionUrl": "#", "fbWorkUrl": "https://facebook.com/groups/profyacademy", "fbCorrectionUrl": "https://facebook.com/groups/profyacademy" },
+    { "id": 5, "date": "2026-01-09", "title": { "fr": "Les mesures", "en": "Measurements", "ar": "القياسات" }, "video": "dQw4w9WgXcQ", "workUrl": "#", "correctionUrl": "#", "fbWorkUrl": "https://facebook.com/groups/profyacademy", "fbCorrectionUrl": "https://facebook.com/groups/profyacademy" },
+    { "id": 6, "date": "2026-01-12", "title": { "fr": "Les proportions", "en": "Proportions", "ar": "التناسب" }, "video": "dQw4w9WgXcQ", "workUrl": "#", "correctionUrl": "#", "fbWorkUrl": "https://facebook.com/groups/profyacademy", "fbCorrectionUrl": "https://facebook.com/groups/profyacademy" }
+  ],
+  "7": [
+    { "id": 7, "date": "2026-01-07", "title": { "fr": "Les équations", "en": "Equations", "ar": "المعادلات" }, "video": "dQw4w9WgXcQ", "workUrl": "#", "correctionUrl": "#", "fbWorkUrl": "https://facebook.com/groups/profyacademy", "fbCorrectionUrl": "https://facebook.com/groups/profyacademy" },
+    { "id": 8, "date": "2026-01-10", "title": { "fr": "La statistique", "en": "Statistics", "ar": "الإحصاء" }, "video": "dQw4w9WgXcQ", "workUrl": "#", "correctionUrl": "#", "fbWorkUrl": "https://facebook.com/groups/profyacademy", "fbCorrectionUrl": "https://facebook.com/groups/profyacademy" },
+    { "id": 9, "date": "2026-01-13", "title": { "fr": "Les fonctions", "en": "Functions", "ar": "الدوال" }, "video": "dQw4w9WgXcQ", "workUrl": "#", "correctionUrl": "#", "fbWorkUrl": "https://facebook.com/groups/profyacademy", "fbCorrectionUrl": "https://facebook.com/groups/profyacademy" }
+  ]
+}
