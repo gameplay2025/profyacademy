@@ -2,18 +2,31 @@
 const SUPABASE_URL = 'https://iztiuutsakynooqiqxth.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml6dGl1dXRzYWt5bm9vcWlxeHRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgyMjM0NjcsImV4cCI6MjA4Mzc5OTQ2N30.HawCEq7CezBOrAdXSVgTnX0s4x-oiDP_JviMGvNJ2ok';
 
-// Initialize Supabase client
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Initialize Supabase client - wait for supabase to be available
+let supabase = null;
+
+function getSupabase() {
+    if (!supabase && window.supabase) {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+    return supabase;
+}
 
 // Auth state (exposed globally for HTML pages)
+var currentUser = null;
+var userProfile = null;
 window.currentUser = null;
 window.userProfile = null;
-let currentUser = null;
-let userProfile = null;
 
 // Initialize auth
 async function initAuth() {
-    const { data: { session } } = await supabase.auth.getSession();
+    const sb = getSupabase();
+    if (!sb) {
+        console.error('Supabase not loaded');
+        return;
+    }
+    
+    const { data: { session } } = await sb.auth.getSession();
     if (session) {
         currentUser = session.user;
         window.currentUser = currentUser;
@@ -21,7 +34,7 @@ async function initAuth() {
     }
     
     // Listen for auth changes
-    supabase.auth.onAuthStateChange(async (event, session) => {
+    sb.auth.onAuthStateChange(async (event, session) => {
         if (event === 'SIGNED_IN' && session) {
             currentUser = session.user;
             window.currentUser = currentUser;
@@ -41,9 +54,10 @@ async function initAuth() {
 
 // Load user profile from database
 async function loadUserProfile() {
-    if (!currentUser) return null;
+    const sb = getSupabase();
+    if (!currentUser || !sb) return null;
     
-    const { data, error } = await supabase
+    const { data, error } = await sb
         .from('user_profiles')
         .select('*')
         .eq('id', currentUser.id)
@@ -61,7 +75,10 @@ async function loadUserProfile() {
 
 // Sign up with email
 async function signUpWithEmail(email, password, studentName, gradeLevels) {
-    const { data, error } = await supabase.auth.signUp({
+    const sb = getSupabase();
+    if (!sb) throw new Error('Supabase not loaded');
+    
+    const { data, error } = await sb.auth.signUp({
         email,
         password,
         options: {
@@ -80,7 +97,10 @@ async function signUpWithEmail(email, password, studentName, gradeLevels) {
 
 // Sign in with email
 async function signInWithEmail(email, password) {
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const sb = getSupabase();
+    if (!sb) throw new Error('Supabase not loaded');
+    
+    const { data, error } = await sb.auth.signInWithPassword({
         email,
         password
     });
@@ -91,7 +111,10 @@ async function signInWithEmail(email, password) {
 
 // Sign in with Google
 async function signInWithGoogle() {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const sb = getSupabase();
+    if (!sb) throw new Error('Supabase not loaded');
+    
+    const { data, error } = await sb.auth.signInWithOAuth({
         provider: 'google',
         options: {
             redirectTo: window.location.origin + '/index.html'
@@ -104,7 +127,10 @@ async function signInWithGoogle() {
 
 // Sign out
 async function signOut() {
-    const { error } = await supabase.auth.signOut();
+    const sb = getSupabase();
+    if (!sb) throw new Error('Supabase not loaded');
+    
+    const { error } = await sb.auth.signOut();
     if (error) throw error;
 }
 
@@ -125,9 +151,11 @@ function getAllowedGradeLevels() {
 
 // Admin: Get all pending users
 async function getPendingUsers() {
+    const sb = getSupabase();
     if (!isAdmin()) throw new Error('Unauthorized');
+    if (!sb) throw new Error('Supabase not loaded');
     
-    const { data, error } = await supabase
+    const { data, error } = await sb
         .from('user_profiles')
         .select('*')
         .eq('is_approved', false)
@@ -140,9 +168,11 @@ async function getPendingUsers() {
 
 // Admin: Get all users
 async function getAllUsers() {
+    const sb = getSupabase();
     if (!isAdmin()) throw new Error('Unauthorized');
+    if (!sb) throw new Error('Supabase not loaded');
     
-    const { data, error } = await supabase
+    const { data, error } = await sb
         .from('user_profiles')
         .select('*')
         .order('created_at', { ascending: false });
@@ -153,9 +183,11 @@ async function getAllUsers() {
 
 // Admin: Approve user
 async function approveUser(userId) {
+    const sb = getSupabase();
     if (!isAdmin()) throw new Error('Unauthorized');
+    if (!sb) throw new Error('Supabase not loaded');
     
-    const { data, error } = await supabase
+    const { data, error } = await sb
         .from('user_profiles')
         .update({ is_approved: true })
         .eq('id', userId)
@@ -168,9 +200,11 @@ async function approveUser(userId) {
 
 // Admin: Reject/Delete user
 async function rejectUser(userId) {
+    const sb = getSupabase();
     if (!isAdmin()) throw new Error('Unauthorized');
+    if (!sb) throw new Error('Supabase not loaded');
     
-    const { error } = await supabase
+    const { error } = await sb
         .from('user_profiles')
         .delete()
         .eq('id', userId);
@@ -180,9 +214,11 @@ async function rejectUser(userId) {
 
 // Admin: Update user grade levels
 async function updateUserGradeLevels(userId, gradeLevels) {
+    const sb = getSupabase();
     if (!isAdmin()) throw new Error('Unauthorized');
+    if (!sb) throw new Error('Supabase not loaded');
     
-    const { data, error } = await supabase
+    const { data, error } = await sb
         .from('user_profiles')
         .update({ grade_levels: gradeLevels })
         .eq('id', userId)
@@ -194,16 +230,17 @@ async function updateUserGradeLevels(userId, gradeLevels) {
 }
 
 // Handle auth state change - to be overridden by page
-function handleAuthStateChange() {
-    // Override this function in your page
+var handleAuthStateChange = function() {
     console.log('Auth state changed:', { currentUser, userProfile });
-}
+};
 
 // Update profile after Google sign-in (for student name and grade levels)
 async function updateProfileAfterOAuth(studentName, gradeLevels) {
+    const sb = getSupabase();
     if (!currentUser) throw new Error('Not authenticated');
+    if (!sb) throw new Error('Supabase not loaded');
     
-    const { data, error } = await supabase
+    const { data, error } = await sb
         .from('user_profiles')
         .update({
             student_name: studentName,
@@ -224,7 +261,7 @@ function needsProfileCompletion() {
     return userProfile && (!userProfile.student_name || userProfile.grade_levels.length === 0);
 }
 
-// Export functions to window for use in HTML pages
+// Export all functions to window immediately
 window.initAuth = initAuth;
 window.signUpWithEmail = signUpWithEmail;
 window.signInWithEmail = signInWithEmail;
@@ -241,3 +278,5 @@ window.updateUserGradeLevels = updateUserGradeLevels;
 window.updateProfileAfterOAuth = updateProfileAfterOAuth;
 window.needsProfileCompletion = needsProfileCompletion;
 window.loadUserProfile = loadUserProfile;
+
+console.log('Auth.js loaded - functions exported:', typeof signInWithEmail, typeof signInWithGoogle);
