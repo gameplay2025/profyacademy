@@ -395,10 +395,43 @@
         
         async function updateProfileAfterOAuth(studentName, gradeLevels) {
             if (!currentUser) throw new Error('Not authenticated');
-            const { data, error } = await supabaseClient.from('user_profiles').update({ student_name: studentName, grade_levels: gradeLevels }).eq('id', currentUser.id).select().single();
-            if (error) throw error;
-            userProfile = data;
-            return data;
+            
+            // First try to update existing profile
+            const { data: existingProfile, error: selectError } = await supabaseClient
+                .from('user_profiles')
+                .select('*')
+                .eq('id', currentUser.id)
+                .single();
+            
+            if (existingProfile) {
+                // Profile exists, update it
+                const { data, error } = await supabaseClient
+                    .from('user_profiles')
+                    .update({ student_name: studentName, grade_levels: gradeLevels })
+                    .eq('id', currentUser.id)
+                    .select()
+                    .single();
+                if (error) throw error;
+                userProfile = data;
+                return data;
+            } else {
+                // Profile doesn't exist, create it
+                const { data, error } = await supabaseClient
+                    .from('user_profiles')
+                    .insert({
+                        id: currentUser.id,
+                        email: currentUser.email,
+                        student_name: studentName,
+                        grade_levels: gradeLevels,
+                        role: 'user',
+                        is_approved: false
+                    })
+                    .select()
+                    .single();
+                if (error) throw error;
+                userProfile = data;
+                return data;
+            }
         }
     </script>
 
@@ -457,9 +490,12 @@
                 window.location.href = 'login.html';
                 return;
             }
+            // If profile exists and is complete, redirect to index
             if (userProfile && !needsProfileCompletion()) {
                 window.location.href = 'index.html';
             }
+            // Otherwise stay on this page to complete profile
+            // (this handles both: profile exists but incomplete, or profile doesn't exist yet)
         };
         
         initAuth();

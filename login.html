@@ -663,7 +663,7 @@
         async function signInWithGoogle() {
             const { data, error } = await supabaseClient.auth.signInWithOAuth({
                 provider: 'google',
-                options: { redirectTo: window.location.origin + '/index.html' }
+                options: { redirectTo: window.location.origin + '/login.html' }
             });
             if (error) throw error;
             return data;
@@ -740,7 +740,18 @@
                 const password = document.getElementById('loginPassword').value;
                 await signInWithEmail(email, password);
                 showMessage('تم تسجيل الدخول بنجاح!', 'success');
-                setTimeout(() => window.location.href = 'index.html', 1000);
+                
+                // Wait for profile to load and redirect appropriately
+                await loadUserProfile();
+                setTimeout(() => {
+                    if (isAdmin()) {
+                        window.location.href = 'admin.html';
+                    } else if (needsProfileCompletion()) {
+                        window.location.href = 'complete-profile.html';
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                }, 1000);
             } catch (error) {
                 showMessage(error.message || 'حدث خطأ أثناء تسجيل الدخول', 'error');
                 btn.disabled = false;
@@ -783,13 +794,31 @@
             }
         });
         
-        // Check if already logged in
-        initAuth().then(() => {
-            if (currentUser && userProfile) {
-                if (isAdmin()) {
-                    window.location.href = 'admin.html';
-                } else if (isApproved()) {
-                    window.location.href = 'index.html';
+        // Check if already logged in or handle OAuth callback
+        initAuth().then(async () => {
+            if (currentUser) {
+                // Make sure profile is loaded - retry a few times if needed
+                let retries = 3;
+                while (!userProfile && retries > 0) {
+                    await loadUserProfile();
+                    if (!userProfile) {
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                        retries--;
+                    }
+                }
+                
+                if (userProfile) {
+                    if (needsProfileCompletion()) {
+                        window.location.href = 'complete-profile.html';
+                    } else if (isAdmin()) {
+                        window.location.href = 'admin.html';
+                    } else if (isApproved()) {
+                        window.location.href = 'index.html';
+                    }
+                    // If not approved, stay on login page to show message
+                } else {
+                    // Profile still doesn't exist after retries - redirect to complete profile
+                    window.location.href = 'complete-profile.html';
                 }
             }
         });
