@@ -1,639 +1,326 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Profy Academy - منصة تعليمية متميزة للطلاب">
     <title>Profy Academy</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cairo:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-light: #818cf8;
-            --primary-dark: #4f46e5;
-            --secondary: #ec4899;
-            --accent: #06b6d4;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --bg: #f8fafc;
-            --bg-card: rgba(255, 255, 255, 0.85);
-            --bg-glass: rgba(255, 255, 255, 0.6);
-            --text: #1e293b;
-            --text-muted: #64748b;
-            --border: rgba(99, 102, 241, 0.2);
-            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-            --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.3);
-            --radius: 24px;
-            --radius-sm: 16px;
+            --primary: #1E459F;
+            --primary-light: #2a5bc7;
+            --primary-dark: #152d6b;
+            --accent: #CF2A2A;
+            --accent-light: #e04545;
+            --yellow: #FABD32;
+            --yellow-light: #fcd06a;
+            --beige: #E1DCCA;
+            --beige-light: #f5f3eb;
+            --white: #ffffff;
+            --text: #1a1a2e;
+            --text-muted: #5a5a6e;
+            --shadow: 0 4px 20px rgba(30, 69, 159, 0.12);
+            --shadow-lg: 0 8px 40px rgba(30, 69, 159, 0.15);
+            --radius: 16px;
+            --radius-sm: 10px;
             --font: 'Cairo', sans-serif;
         }
 
-        [data-theme="dark"] {
-            --bg: #0f172a;
-            --bg-card: rgba(30, 41, 59, 0.85);
-            --bg-glass: rgba(30, 41, 59, 0.6);
-            --text: #f1f5f9;
-            --text-muted: #94a3b8;
-            --border: rgba(99, 102, 241, 0.3);
-            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        [dir="ltr"] {
-            --font: 'Inter', sans-serif;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: var(--font);
-            background: var(--bg);
+            background: var(--beige-light);
             color: var(--text);
-            line-height: 1.8;
-            font-size: 18px;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow-x: hidden;
-        }
-
-        /* Animated Background */
-        .bg-animation {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .bg-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.5;
-            animation: float 20s infinite ease-in-out;
-        }
-
-        .bg-orb:nth-child(1) {
-            width: 600px;
-            height: 600px;
-            background: var(--primary);
-            top: -200px;
-            right: -200px;
-            animation-delay: 0s;
-        }
-
-        .bg-orb:nth-child(2) {
-            width: 500px;
-            height: 500px;
-            background: var(--secondary);
-            bottom: -150px;
-            left: -150px;
-            animation-delay: -5s;
-        }
-
-        .bg-orb:nth-child(3) {
-            width: 400px;
-            height: 400px;
-            background: var(--accent);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation-delay: -10s;
-        }
-
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1);
-            }
-
-            25% {
-                transform: translate(30px, -30px) scale(1.05);
-            }
-
-            50% {
-                transform: translate(-20px, 20px) scale(0.95);
-            }
-
-            75% {
-                transform: translate(20px, 30px) scale(1.02);
-            }
-        }
-
-        /* Loader */
-        .loader {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, #4f46e5, #6366f1, #818cf8, #ec4899);
-            background-size: 400% 400%;
-            animation: gradientShift 3s ease infinite;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.6s, visibility 0.6s;
-        }
-
-        @keyframes gradientShift {
-
-            0%,
-            100% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-        }
-
-        .loader.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .loader-logo {
-            width: 180px;
-            margin-bottom: 50px;
-            animation: logoFloat 3s ease-in-out infinite;
-            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3));
-        }
-
-        @keyframes logoFloat {
-
-            0%,
-            100% {
-                transform: translateY(0) scale(1);
-            }
-
-            50% {
-                transform: translateY(-15px) scale(1.02);
-            }
-        }
-
-        .loader-ring {
-            width: 200px;
-            height: 200px;
-            position: relative;
-        }
-
-        .loader-ring::before,
-        .loader-ring::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            border: 4px solid transparent;
-        }
-
-        .loader-ring::before {
-            border-top-color: white;
-            animation: spin 1.5s linear infinite;
-        }
-
-        .loader-ring::after {
-            border-bottom-color: rgba(255, 255, 255, 0.5);
-            animation: spin 2s linear infinite reverse;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .loader-percent {
-            position: absolute;
-            color: white;
-            font-size: 32px;
-            font-weight: 800;
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Language Popup */
-        .lang-popup-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            opacity: 1;
-            transition: opacity 0.4s;
-        }
-
-        .lang-popup-overlay.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .lang-popup {
-            background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            border-radius: var(--radius);
-            padding: 50px;
-            text-align: center;
-            max-width: 420px;
-            width: 90%;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-glow);
-            animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        @keyframes popIn {
-            from {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .lang-popup h2 {
-            margin-bottom: 12px;
-            font-size: 28px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .lang-popup p {
-            margin-bottom: 30px;
-            color: var(--text-muted);
-            font-size: 16px;
-        }
-
-        .lang-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .lang-btn {
-            padding: 20px;
-            border: 2px solid var(--border);
-            border-radius: var(--radius-sm);
-            background: var(--bg-glass);
-            backdrop-filter: blur(10px);
-            color: var(--text);
-            font-size: 20px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            font-family: var(--font);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-        }
-
-        .lang-btn:hover {
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            border-color: var(--primary);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-glow);
+            line-height: 1.7;
+            min-height: 100vh;
         }
 
         /* Header */
-        .main-container {
-            max-width: 1500px;
-            margin: 0 auto;
-            padding: 30px 24px;
-            position: relative;
+        .header {
+            background: var(--white);
+            border-bottom: 3px solid var(--yellow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .simple-header {
+        .header-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 16px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
             gap: 20px;
-            padding: 20px 30px;
-            background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
         }
 
         .logo-img {
-            height: 70px;
-            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
-            transition: transform 0.4s;
+            height: 55px;
+            transition: transform 0.3s;
         }
 
-        .logo-img:hover {
-            transform: scale(1.05);
-        }
+        .logo-img:hover { transform: scale(1.03); }
 
         .header-actions {
             display: flex;
-            gap: 14px;
+            gap: 12px;
             align-items: center;
         }
 
         .header-btn {
-            padding: 14px 24px;
-            border: 2px solid var(--border);
+            padding: 10px 20px;
+            border: 2px solid var(--primary);
             border-radius: var(--radius-sm);
-            background: var(--bg-glass);
-            backdrop-filter: blur(10px);
-            color: var(--text);
-            font-size: 15px;
+            background: transparent;
+            color: var(--primary);
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             font-family: var(--font);
-            transition: all 0.4s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            opacity: 0;
-            transition: opacity 0.4s;
+            transition: all 0.3s;
+            text-decoration: none;
         }
 
         .header-btn:hover {
-            border-color: var(--primary);
-            transform: translateY(-2px);
+            background: var(--primary);
+            color: var(--white);
         }
 
-        .header-btn:hover::before {
-            opacity: 0.1;
+        .header-btn.primary {
+            background: var(--primary);
+            color: var(--white);
         }
 
-        .dark-toggle {
-            width: 54px;
-            height: 54px;
-            border-radius: 50%;
-            font-size: 24px;
+        .header-btn.primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .header-btn.danger {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .header-btn.danger:hover {
+            background: var(--accent);
+            color: var(--white);
+        }
+
+        .user-badge {
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 0;
+            gap: 10px;
+            padding: 8px 16px;
+            background: var(--beige);
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .user-badge::before {
+            content: '👤';
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 30px 24px;
         }
 
         /* Hero Section */
-        .hero-section {
-            text-align: center;
-            padding: 60px 20px;
-            margin-bottom: 40px;
-            background: linear-gradient(135deg, var(--bg-glass), transparent);
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             border-radius: var(--radius);
-            border: 1px solid var(--border);
+            padding: 50px 40px;
+            margin-bottom: 30px;
             position: relative;
             overflow: hidden;
+            color: var(--white);
+            text-align: center;
         }
 
-        .hero-section::before {
+        .hero::before {
             content: '';
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: conic-gradient(from 0deg, transparent, var(--primary), transparent 30%);
-            animation: rotate 10s linear infinite;
-            opacity: 0.05;
-        }
-
-        @keyframes rotate {
-            to {
-                transform: rotate(360deg);
-            }
+            background: radial-gradient(circle, rgba(250, 189, 50, 0.15) 0%, transparent 50%);
+            pointer-events: none;
         }
 
         .hero-title {
-            font-size: clamp(32px, 5vw, 48px);
+            font-size: clamp(28px, 4vw, 40px);
             font-weight: 800;
-            margin-bottom: 16px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradientText 4s linear infinite;
+            margin-bottom: 12px;
             position: relative;
         }
 
-        @keyframes gradientText {
-            to {
-                background-position: 200% center;
-            }
-        }
-
         .hero-subtitle {
-            color: var(--text-muted);
             font-size: 18px;
-            max-width: 600px;
+            opacity: 0.9;
+            max-width: 500px;
             margin: 0 auto;
+            position: relative;
         }
 
-        /* Filter Section */
-        .filter-section {
+        .hero-decoration {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--yellow);
+            opacity: 0.1;
+        }
+
+        .hero-decoration:nth-child(1) { top: -40px; right: -40px; }
+        .hero-decoration:nth-child(2) { bottom: -60px; left: -30px; width: 150px; height: 150px; }
+
+        /* Grade Tabs */
+        .grade-section {
+            margin-bottom: 30px;
+        }
+
+        .section-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .grade-tabs {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .grade-tab {
+            padding: 14px 32px;
+            border: none;
+            border-radius: var(--radius-sm);
+            background: var(--white);
+            color: var(--text);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: var(--font);
+            box-shadow: var(--shadow);
+        }
+
+        .grade-tab:hover {
+            background: var(--beige);
+        }
+
+        .grade-tab.active {
+            background: var(--primary);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(30, 69, 159, 0.3);
+        }
+
+        /* Filter */
+        .filter-bar {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 16px;
-            margin-bottom: 35px;
+            gap: 12px;
+            margin-bottom: 30px;
             flex-wrap: wrap;
         }
 
         .date-input {
-            padding: 16px 24px;
-            border: 2px solid var(--border);
+            padding: 12px 18px;
+            border: 2px solid var(--beige);
             border-radius: var(--radius-sm);
-            background: var(--bg-card);
-            backdrop-filter: blur(10px);
+            background: var(--white);
             color: var(--text);
-            font-size: 16px;
+            font-size: 15px;
             font-family: var(--font);
-            transition: all 0.4s;
+            transition: all 0.3s;
         }
 
         .date-input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: var(--shadow-glow);
         }
 
         .clear-btn {
-            padding: 16px 28px;
+            padding: 12px 20px;
             border: none;
             border-radius: var(--radius-sm);
-            background: linear-gradient(135deg, #ef4444, #f87171);
-            color: white;
-            font-size: 15px;
+            background: var(--accent);
+            color: var(--white);
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             font-family: var(--font);
-            transition: all 0.4s;
+            transition: all 0.3s;
         }
 
         .clear-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);
-        }
-
-        /* Grade Tabs */
-        .grade-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            padding: 10px;
-            background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            border-radius: 60px;
-            border: 1px solid var(--border);
-            width: fit-content;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .grade-tab {
-            padding: 18px 40px;
-            border: none;
-            border-radius: 50px;
-            background: transparent;
-            color: var(--text-muted);
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            font-family: var(--font);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .grade-tab::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            opacity: 0;
-            transition: opacity 0.4s;
-            border-radius: 50px;
-        }
-
-        .grade-tab:hover {
-            color: var(--primary);
-        }
-
-        .grade-tab:hover::before {
-            opacity: 0.1;
-        }
-
-        .grade-tab.active {
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: white;
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
-        }
-
-        .grade-tab.active::before {
-            opacity: 0;
+            background: var(--accent-light);
         }
 
         /* Lessons Grid */
         .lessons-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 24px;
         }
 
         .lesson-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(20px);
+            background: var(--white);
             border-radius: var(--radius);
             overflow: hidden;
             box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-        }
-
-        .lesson-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
-            background-size: 200% auto;
-            animation: shimmer 3s linear infinite;
-        }
-
-        @keyframes shimmer {
-            to {
-                background-position: 200% center;
-            }
+            transition: all 0.3s;
+            border: 1px solid rgba(0,0,0,0.05);
         }
 
         .lesson-card:hover {
-            transform: translateY(-12px) scale(1.02);
-            box-shadow: var(--shadow-glow), var(--shadow);
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
         }
 
         .lesson-header {
-            padding: 24px;
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary), var(--primary-light));
-            color: white;
+            padding: 20px;
+            background: var(--primary);
+            color: var(--white);
             position: relative;
-            overflow: hidden;
         }
 
-        .lesson-header::before {
+        .lesson-header::after {
             content: '';
             position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--yellow);
         }
 
         .lesson-header h3 {
-            font-size: 22px;
-            margin-bottom: 8px;
-            position: relative;
-            z-index: 1;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 6px;
         }
 
         .lesson-date {
-            font-size: 14px;
-            opacity: 0.9;
+            font-size: 13px;
+            opacity: 0.85;
             display: flex;
             align-items: center;
-            gap: 8px;
-            position: relative;
-            z-index: 1;
+            gap: 6px;
         }
 
         .video-container {
             position: relative;
             padding-bottom: 56.25%;
-            background: linear-gradient(135deg, #1e293b, #0f172a);
+            background: #0a0a0a;
         }
 
         .video-container iframe {
@@ -646,81 +333,69 @@
         }
 
         .card-actions {
-            padding: 20px;
+            padding: 16px 20px;
             display: flex;
-            gap: 14px;
+            gap: 12px;
+            background: var(--beige-light);
         }
 
         .btn {
             flex: 1;
-            padding: 18px;
+            padding: 14px 16px;
             border: none;
             border-radius: var(--radius-sm);
             font-family: var(--font);
             font-weight: 700;
-            font-size: 17px;
+            font-size: 15px;
             cursor: pointer;
             text-align: center;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.6s;
-        }
-
-        .btn:hover::before {
-            left: 100%;
+            gap: 8px;
         }
 
         .btn-work {
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            color: white;
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-work:hover {
+            background: var(--primary-dark);
         }
 
         .btn-correction {
-            background: linear-gradient(135deg, #059669, var(--success));
-            color: white;
+            background: var(--yellow);
+            color: var(--text);
         }
 
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        .btn-correction:hover {
+            background: var(--yellow-light);
         }
 
+        /* No Results */
         .no-results {
             text-align: center;
-            padding: 80px 20px;
+            padding: 60px 20px;
             color: var(--text-muted);
-            font-size: 20px;
+            font-size: 18px;
             grid-column: 1 / -1;
+            background: var(--white);
+            border-radius: var(--radius);
         }
 
-        .no-results::before {
-            content: '📚';
+        .no-results-icon {
+            font-size: 50px;
+            margin-bottom: 16px;
             display: block;
-            font-size: 64px;
-            margin-bottom: 20px;
         }
 
         /* Download Popup */
-        .download-overlay {
+        .popup-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.6);
             display: none;
             align-items: center;
             justify-content: center;
@@ -728,416 +403,274 @@
             padding: 20px;
         }
 
-        .download-overlay.active {
-            display: flex;
-        }
+        .popup-overlay.active { display: flex; }
 
-        .download-popup {
-            background: var(--bg-card);
-            backdrop-filter: blur(20px);
+        .popup {
+            background: var(--white);
             border-radius: var(--radius);
-            max-width: 480px;
+            max-width: 420px;
             width: 100%;
-            padding: 40px;
+            padding: 32px;
             text-align: center;
-            animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: 1px solid var(--border);
+            animation: popIn 0.3s ease;
         }
 
-        .download-popup h3 {
-            font-size: 24px;
-            margin-bottom: 30px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        @keyframes popIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
-        .download-options {
+        .popup h3 {
+            font-size: 22px;
+            margin-bottom: 24px;
+            color: var(--primary);
+        }
+
+        .popup-options {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
         }
 
-        .download-opt {
-            padding: 22px;
-            border: 2px solid var(--border);
+        .popup-opt {
+            padding: 16px 20px;
+            border: 2px solid var(--beige);
             border-radius: var(--radius-sm);
-            background: var(--bg-glass);
-            backdrop-filter: blur(10px);
+            background: var(--white);
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 16px;
-            font-size: 18px;
+            gap: 14px;
+            font-size: 16px;
             font-weight: 600;
-            transition: all 0.4s;
+            transition: all 0.3s;
             text-decoration: none;
             color: var(--text);
         }
 
-        .download-opt:hover {
+        .popup-opt:hover {
             border-color: var(--primary);
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-glow);
+            background: var(--beige-light);
         }
 
-        .download-opt span.icon {
-            font-size: 32px;
-        }
+        .popup-opt .icon { font-size: 24px; }
 
-        .download-cancel {
-            margin-top: 24px;
-            padding: 16px 36px;
-            border: 2px solid var(--border);
+        .popup-cancel {
+            margin-top: 20px;
+            padding: 12px 28px;
+            border: 2px solid var(--beige);
             background: transparent;
             color: var(--text-muted);
             border-radius: var(--radius-sm);
-            font-size: 16px;
+            font-size: 15px;
             cursor: pointer;
             font-family: var(--font);
             font-weight: 600;
-            transition: all 0.4s;
+            transition: all 0.3s;
         }
 
-        .download-cancel:hover {
-            border-color: #ef4444;
-            color: #ef4444;
+        .popup-cancel:hover {
+            border-color: var(--accent);
+            color: var(--accent);
         }
 
-        /* FAB & Help Modal */
-        .fab {
+        /* Help Button */
+        .help-btn {
             position: fixed;
-            bottom: 40px;
-            right: 40px;
-            width: 70px;
-            height: 70px;
+            bottom: 30px;
+            left: 30px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
+            background: var(--yellow);
+            color: var(--text);
             border: none;
-            font-size: 32px;
+            font-size: 24px;
+            font-weight: 800;
             cursor: pointer;
-            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.5);
-            z-index: 999;
-            transition: all 0.4s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            box-shadow: 0 4px 20px rgba(250, 189, 50, 0.4);
+            z-index: 99;
+            transition: all 0.3s;
         }
 
-        .fab:hover {
-            transform: scale(1.1) rotate(10deg);
-            box-shadow: 0 15px 50px rgba(99, 102, 241, 0.6);
+        .help-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(250, 189, 50, 0.5);
         }
 
-        [dir="rtl"] .fab {
-            right: auto;
-            left: 40px;
-        }
-
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
+        /* Help Modal */
         .modal {
-            background: var(--bg-card);
-            backdrop-filter: blur(20px);
+            background: var(--white);
             border-radius: var(--radius);
-            max-width: 520px;
+            max-width: 480px;
             width: 100%;
-            padding: 40px;
+            padding: 32px;
             position: relative;
-            border: 1px solid var(--border);
-            animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .modal-close {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 44px;
-            height: 44px;
-            border: 2px solid var(--border);
-            background: var(--bg-glass);
+            top: 16px;
+            left: 16px;
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: var(--beige);
             border-radius: 50%;
             cursor: pointer;
-            font-size: 24px;
+            font-size: 20px;
             color: var(--text-muted);
-            transition: all 0.4s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            transition: all 0.3s;
         }
 
         .modal-close:hover {
-            border-color: #ef4444;
-            color: #ef4444;
-            transform: rotate(90deg);
-        }
-
-        [dir="rtl"] .modal-close {
-            right: auto;
-            left: 20px;
+            background: var(--accent);
+            color: var(--white);
         }
 
         .modal h2 {
-            margin-bottom: 24px;
-            font-size: 28px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--primary);
         }
 
         .modal ol {
-            padding-inline-start: 28px;
-            font-size: 17px;
+            padding-inline-start: 24px;
         }
 
         .modal li {
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             color: var(--text-muted);
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border);
+            padding: 10px 0;
+            border-bottom: 1px solid var(--beige);
         }
 
-        .modal li:last-child {
-            border-bottom: none;
-        }
+        .modal li:last-child { border-bottom: none; }
 
         /* Footer */
         .footer {
-            margin-top: 60px;
-            padding: 40px;
-            background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
+            margin-top: 50px;
+            padding: 30px;
+            background: var(--white);
+            border-top: 3px solid var(--yellow);
             text-align: center;
         }
 
         .footer-logo {
-            height: 50px;
-            margin-bottom: 20px;
+            height: 40px;
+            margin-bottom: 12px;
             opacity: 0.8;
         }
 
         .footer-text {
             color: var(--text-muted);
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .footer-heart {
-            color: #ef4444;
-            animation: heartbeat 1.5s ease infinite;
-            display: inline-block;
-        }
-
-        @keyframes heartbeat {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.2);
-            }
+            color: var(--accent);
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            body {
-                font-size: 16px;
-            }
-
-            .logo-img {
-                height: 55px;
-            }
-
-            .lessons-grid {
-                grid-template-columns: 1fr;
-                gap: 24px;
-            }
-
-            .grade-tabs {
-                border-radius: var(--radius);
-                padding: 8px;
-            }
-
-            .grade-tab {
-                padding: 14px 24px;
-                font-size: 16px;
-                border-radius: var(--radius-sm);
-            }
-
-            .hero-section {
-                padding: 40px 16px;
-            }
-
-            .simple-header {
-                padding: 16px 20px;
-            }
-
-            .fab {
-                width: 60px;
-                height: 60px;
-                font-size: 28px;
-                bottom: 24px;
-            }
-
-            [dir="rtl"] .fab {
-                left: 24px;
-            }
-
-            .bg-orb {
-                opacity: 0.3;
-            }
+            .header-inner { flex-wrap: wrap; justify-content: center; }
+            .logo-img { height: 45px; }
+            .lessons-grid { grid-template-columns: 1fr; }
+            .hero { padding: 35px 24px; }
+            .grade-tab { padding: 12px 24px; font-size: 15px; }
+            .help-btn { bottom: 20px; left: 20px; width: 50px; height: 50px; font-size: 20px; }
         }
     </style>
 </head>
-
 <body>
-    <div class="bg-animation">
-        <div class="bg-orb"></div>
-        <div class="bg-orb"></div>
-        <div class="bg-orb"></div>
-    </div>
-
-    <div class="loader" id="loader">
-        <img src="https://i.ibb.co/4ZCdQd13/logo-plateforme.png" alt="Profy Academy" class="loader-logo">
-        <div class="loader-ring">
-            <div class="loader-percent" id="loaderPercent">0%</div>
-        </div>
-    </div>
-
-    <div class="lang-popup-overlay hidden" id="langPopup">
-        <div class="lang-popup">
-            <h2>🌍 اختر اللغة / Choose Language</h2>
-            <p>Choisissez votre langue préférée</p>
-            <div class="lang-buttons">
-                <button class="lang-btn" data-lang="ar">🇸🇦 العربية</button>
-                <button class="lang-btn" data-lang="fr">🇫🇷 Français</button>
-                <button class="lang-btn" data-lang="en">🇬🇧 English</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="main-container">
-        <header class="simple-header">
+    <header class="header">
+        <div class="header-inner">
             <img src="https://i.ibb.co/4ZCdQd13/logo-plateforme.png" alt="Profy Academy" class="logo-img">
             <div class="header-actions">
-                <div id="userInfo" style="display: none; align-items: center; gap: 12px;">
-                    <span id="userName" style="font-weight: 600;"></span>
-                    <a href="admin.html" id="adminLink" class="header-btn" style="display: none;">🛠️ لوحة التحكم</a>
-                    <button class="header-btn" id="logoutBtn" style="border-color: #ef4444; color: #ef4444;">🚪 خروج</button>
+                <div id="userInfo" style="display: none;">
+                    <span class="user-badge" id="userName"></span>
                 </div>
-                <a href="login.html" id="loginLink" class="header-btn">🔐 تسجيل الدخول</a>
-                <button class="header-btn" id="changeLangBtn" data-i18n="changeLang">🌐 تغيير اللغة</button>
-                <button class="header-btn dark-toggle" id="darkToggle">🌙</button>
+                <a href="admin.html" id="adminLink" class="header-btn" style="display: none;">لوحة التحكم</a>
+                <button class="header-btn danger" id="logoutBtn" style="display: none;">خروج</button>
+                <a href="login.html" id="loginLink" class="header-btn primary">تسجيل الدخول</a>
             </div>
-        </header>
+        </div>
+    </header>
 
-        <section class="hero-section">
-            <h1 class="hero-title" data-i18n="heroTitle">مرحباً بك في بروفي أكاديمي</h1>
-            <p class="hero-subtitle" data-i18n="heroSubtitle">منصتك التعليمية المتميزة للتفوق والنجاح</p>
+    <main class="main-container">
+        <section class="hero">
+            <div class="hero-decoration"></div>
+            <div class="hero-decoration"></div>
+            <h1 class="hero-title">مرحباً بك في بروفي أكاديمي</h1>
+            <p class="hero-subtitle">منصتك التعليمية المتميزة للتفوق والنجاح</p>
         </section>
 
-        <div class="filter-section">
-            <input type="date" class="date-input" id="dateFilter">
-            <button class="clear-btn" id="clearDate" data-i18n="clearDate">✕ مسح</button>
-        </div>
+        <section class="grade-section">
+            <span class="section-label">اختر المستوى الدراسي</span>
+            <div class="grade-tabs">
+                <button class="grade-tab active" data-grade="5">السنة الخامسة</button>
+                <button class="grade-tab" data-grade="6">السنة السادسة</button>
+                <button class="grade-tab" data-grade="7">السنة السابعة</button>
+            </div>
+        </section>
 
-        <div class="grade-tabs">
-            <button class="grade-tab active" data-grade="5" data-i18n="grade5">السنة الخامسة</button>
-            <button class="grade-tab" data-grade="6" data-i18n="grade6">السنة السادسة</button>
-            <button class="grade-tab" data-grade="7" data-i18n="grade7">السنة السابعة</button>
+        <div class="filter-bar">
+            <input type="date" class="date-input" id="dateFilter">
+            <button class="clear-btn" id="clearDate">مسح التاريخ</button>
         </div>
 
         <div class="lessons-grid" id="lessonsGrid"></div>
+    </main>
 
-        <footer class="footer">
-            <img src="https://i.ibb.co/4ZCdQd13/logo-plateforme.png" alt="Profy Academy" class="footer-logo">
-            <p class="footer-text">© 2026 Profy Academy - Made with <span class="footer-heart">❤</span></p>
-        </footer>
-    </div>
+    <footer class="footer">
+        <img src="https://i.ibb.co/4ZCdQd13/logo-plateforme.png" alt="Profy Academy" class="footer-logo">
+        <p class="footer-text">© 2026 Profy Academy - صُنع بـ <span class="footer-heart">❤</span></p>
+    </footer>
 
-    <button class="fab" id="helpBtn">?</button>
+    <button class="help-btn" id="helpBtn">؟</button>
 
-    <div class="modal-overlay" id="modalOverlay">
+    <div class="popup-overlay" id="modalOverlay">
         <div class="modal">
             <button class="modal-close" id="modalClose">×</button>
-            <h2 data-i18n="helpTitle">كيفية الاستخدام؟</h2>
+            <h2>كيفية الاستخدام؟</h2>
             <ol>
-                <li data-i18n="helpStep1">اختر مستواك الدراسي</li>
-                <li data-i18n="helpStep2">شاهد الفيديو التعليمي</li>
-                <li data-i18n="helpStep3">حمّل العمل أو شاهده على فيسبوك</li>
-                <li data-i18n="helpStep4">تحقق من الإصلاح</li>
+                <li>اختر مستواك الدراسي</li>
+                <li>شاهد الفيديو التعليمي</li>
+                <li>حمّل العمل أو شاهده على فيسبوك</li>
+                <li>تحقق من الإصلاح</li>
             </ol>
         </div>
     </div>
 
-    <div class="download-overlay" id="downloadOverlay">
-        <div class="download-popup">
-            <h3 id="downloadTitle" data-i18n="chooseOption">اختر طريقة الوصول</h3>
-            <div class="download-options">
-                <a href="#" class="download-opt" id="facebookOpt"><span class="icon">📘</span><span
-                        data-i18n="viewFacebook">مشاهدة على فيسبوك</span></a>
-                <a href="#" class="download-opt" id="downloadOpt"><span class="icon">📥</span><span
-                        data-i18n="downloadFile">تحميل الملف</span></a>
+    <div class="popup-overlay" id="downloadOverlay">
+        <div class="popup">
+            <h3>اختر طريقة الوصول</h3>
+            <div class="popup-options">
+                <a href="#" class="popup-opt" id="facebookOpt">
+                    <span class="icon">📘</span>
+                    <span>مشاهدة على فيسبوك</span>
+                </a>
+                <a href="#" class="popup-opt" id="downloadOpt">
+                    <span class="icon">📥</span>
+                    <span>تحميل الملف</span>
+                </a>
             </div>
-            <button class="download-cancel" id="downloadCancel" data-i18n="cancel">إلغاء</button>
+            <button class="popup-cancel" id="downloadCancel">إلغاء</button>
         </div>
     </div>
 
     <script src="auth.js"></script>
     <script>
-        const translations = {
-            ar: { grade5: "السنة الخامسة", grade6: "السنة السادسة", grade7: "السنة السابعة", helpTitle: "كيفية الاستخدام؟", helpStep1: "اختر مستواك الدراسي", helpStep2: "شاهد الفيديو التعليمي", helpStep3: "حمّل العمل أو شاهده على فيسبوك", helpStep4: "تحقق من الإصلاح", work: "📄 العمل", correction: "✅ الإصلاح", changeLang: "🌐 تغيير اللغة", clearDate: "✕ مسح", chooseOption: "اختر طريقة الوصول", viewFacebook: "مشاهدة على فيسبوك", downloadFile: "تحميل الملف", cancel: "إلغاء", noResults: "لا توجد دروس في هذا التاريخ", heroTitle: "مرحباً بك في بروفي أكاديمي", heroSubtitle: "منصتك التعليمية المتميزة للتفوق والنجاح", notApproved: "حسابك في انتظار الموافقة من المسؤول", loginRequired: "يرجى تسجيل الدخول للوصول إلى المحتوى" },
-            fr: { grade5: "5ème année", grade6: "6ème année", grade7: "7ème année", helpTitle: "Comment utiliser ?", helpStep1: "Choisissez votre niveau", helpStep2: "Regardez la vidéo", helpStep3: "Téléchargez ou consultez sur Facebook", helpStep4: "Vérifiez avec la correction", work: "📄 Devoir", correction: "✅ Correction", changeLang: "🌐 Changer la langue", clearDate: "✕ Effacer", chooseOption: "Choisissez une option", viewFacebook: "Voir sur Facebook", downloadFile: "Télécharger", cancel: "Annuler", noResults: "Aucune leçon à cette date", heroTitle: "Bienvenue à Profy Academy", heroSubtitle: "Votre plateforme éducative d'excellence", notApproved: "Votre compte est en attente d'approbation", loginRequired: "Veuillez vous connecter pour accéder au contenu" },
-            en: { grade5: "5th Grade", grade6: "6th Grade", grade7: "7th Grade", helpTitle: "How to use?", helpStep1: "Select your grade", helpStep2: "Watch the video", helpStep3: "Download or view on Facebook", helpStep4: "Check with correction", work: "📄 Work", correction: "✅ Correction", changeLang: "🌐 Change Language", clearDate: "✕ Clear", chooseOption: "Choose an option", viewFacebook: "View on Facebook", downloadFile: "Download", cancel: "Cancel", noResults: "No lessons on this date", heroTitle: "Welcome to Profy Academy", heroSubtitle: "Your platform for educational excellence", notApproved: "Your account is pending approval", loginRequired: "Please login to access content" }
-        };
-
         let lessons = {};
-        let currentLang = 'ar';
         let currentGrade = 5;
         let selectedDate = '';
         let allowedGrades = [];
 
-        fetch('lessons.json').then(r => r.json()).then(data => { lessons = data; renderLessons(); }).catch(() => { lessons = { "5": [], "6": [], "7": [] }; renderLessons(); });
-
-        let progress = 0;
-        const loadingInterval = setInterval(() => {
-            progress += Math.random() * 12 + 4;
-            if (progress >= 100) { progress = 100; clearInterval(loadingInterval); setTimeout(() => document.getElementById('loader').classList.add('hidden'), 400); }
-            document.getElementById('loaderPercent').textContent = Math.floor(progress) + '%';
-        }, 180);
-
-        function setLanguage(lang) {
-            currentLang = lang;
-            localStorage.setItem('lang', lang);
-            document.documentElement.lang = lang;
-            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-            document.body.style.fontFamily = lang === 'ar' ? "'Cairo', sans-serif" : "'Inter', sans-serif";
-            document.querySelectorAll('[data-i18n]').forEach(el => { if (translations[lang][el.dataset.i18n]) el.textContent = translations[lang][el.dataset.i18n]; });
-            renderLessons();
-            updateGradeTabs();
-        }
+        // Load lessons
+        fetch('lessons.json')
+            .then(r => r.json())
+            .then(data => { lessons = data; renderLessons(); })
+            .catch(() => { lessons = { "5": [], "6": [], "7": [] }; renderLessons(); });
 
         function updateGradeTabs() {
             document.querySelectorAll('.grade-tab').forEach(tab => {
@@ -1148,7 +681,6 @@
                     tab.style.display = '';
                 }
             });
-            // Select first allowed grade if current is not allowed
             if (allowedGrades.length > 0 && !allowedGrades.includes(currentGrade) && !isAdmin()) {
                 const firstAllowed = allowedGrades[0];
                 if (firstAllowed) setGrade(firstAllowed);
@@ -1156,50 +688,81 @@
         }
 
         function renderLessons() {
-            const t = translations[currentLang];
             const grid = document.getElementById('lessonsGrid');
             
-            // Check if user needs to login or be approved
             if (!currentUser) {
-                grid.innerHTML = `<div class="no-results" style="grid-column: 1/-1;">${t.loginRequired}<br><a href="login.html" style="color: var(--primary); text-decoration: none; font-weight: 600;">تسجيل الدخول</a></div>`;
+                grid.innerHTML = `
+                    <div class="no-results">
+                        <span class="no-results-icon">🔐</span>
+                        يرجى تسجيل الدخول للوصول إلى المحتوى
+                        <br><a href="login.html" style="color: var(--primary); text-decoration: none; font-weight: 600;">تسجيل الدخول</a>
+                    </div>`;
                 return;
             }
             
             if (!isAdmin() && !isApproved()) {
-                grid.innerHTML = `<div class="no-results" style="grid-column: 1/-1;">⏳ ${t.notApproved}</div>`;
+                grid.innerHTML = `
+                    <div class="no-results">
+                        <span class="no-results-icon">⏳</span>
+                        حسابك في انتظار الموافقة من المسؤول
+                    </div>`;
                 return;
             }
             
-            // Check if user has access to this grade
             if (!isAdmin() && allowedGrades.length > 0 && !allowedGrades.includes(currentGrade)) {
-                grid.innerHTML = `<div class="no-results">${t.noResults}</div>`;
+                grid.innerHTML = `<div class="no-results"><span class="no-results-icon">📚</span>لا توجد دروس متاحة</div>`;
                 return;
             }
             
             let data = lessons[currentGrade] || [];
             if (selectedDate) data = data.filter(l => l.date === selectedDate);
+            
             if (data.length === 0) {
-                grid.innerHTML = `<div class="no-results">${t.noResults}</div>`;
+                grid.innerHTML = `<div class="no-results"><span class="no-results-icon">📚</span>لا توجد دروس في هذا التاريخ</div>`;
                 return;
             }
+            
             grid.innerHTML = data.map(lesson => `
                 <div class="lesson-card">
-                    <div class="lesson-header"><h3>${lesson.title[currentLang]}</h3><div class="lesson-date">📅 ${lesson.date}</div></div>
-                    <div class="video-container"><iframe src="https://www.youtube.com/embed/${lesson.video}" allowfullscreen loading="lazy"></iframe></div>
+                    <div class="lesson-header">
+                        <h3>${lesson.title.ar}</h3>
+                        <div class="lesson-date">📅 ${lesson.date}</div>
+                    </div>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/${lesson.video}" allowfullscreen loading="lazy"></iframe>
+                    </div>
                     <div class="card-actions">
-                        <button class="btn btn-work" onclick="openDownload('work', ${lesson.id})">${t.work}</button>
-                        <button class="btn btn-correction" onclick="openDownload('correction', ${lesson.id})">${t.correction}</button>
+                        <button class="btn btn-work" onclick="openDownload('work', ${lesson.id})">📄 العمل</button>
+                        <button class="btn btn-correction" onclick="openDownload('correction', ${lesson.id})">✅ الإصلاح</button>
                     </div>
                 </div>
             `).join('');
         }
 
-        function setGrade(grade) { currentGrade = grade; document.querySelectorAll('.grade-tab').forEach(t => t.classList.toggle('active', t.dataset.grade == grade)); renderLessons(); }
+        function setGrade(grade) {
+            currentGrade = grade;
+            document.querySelectorAll('.grade-tab').forEach(t => 
+                t.classList.toggle('active', parseInt(t.dataset.grade) === grade)
+            );
+            renderLessons();
+        }
 
         let currentDownload = { type: '', id: 0 };
-        function openDownload(type, id) { currentDownload = { type, id }; document.getElementById('downloadOverlay').classList.add('active'); }
-        function getLesson(id) { for (let g in lessons) { const l = lessons[g].find(x => x.id === id); if (l) return l; } return null; }
+        
+        function openDownload(type, id) {
+            currentDownload = { type, id };
+            document.getElementById('downloadOverlay').classList.add('active');
+        }
+        
+        function getLesson(id) {
+            for (let g in lessons) {
+                const l = lessons[g].find(x => x.id === id);
+                if (l) return l;
+            }
+            return null;
+        }
 
+        // Event Listeners
         document.getElementById('facebookOpt').addEventListener('click', e => {
             e.preventDefault();
             const l = getLesson(currentDownload.id);
@@ -1210,55 +773,77 @@
         document.getElementById('downloadOpt').addEventListener('click', e => {
             e.preventDefault();
             const l = getLesson(currentDownload.id);
-            if (l) { const a = document.createElement('a'); a.href = currentDownload.type === 'work' ? l.workUrl : l.correctionUrl; a.download = ''; a.click(); }
+            if (l) {
+                const a = document.createElement('a');
+                a.href = currentDownload.type === 'work' ? l.workUrl : l.correctionUrl;
+                a.download = '';
+                a.click();
+            }
             document.getElementById('downloadOverlay').classList.remove('active');
         });
 
-        document.getElementById('downloadCancel').addEventListener('click', () => document.getElementById('downloadOverlay').classList.remove('active'));
-        document.getElementById('downloadOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) e.currentTarget.classList.remove('active'); });
-        document.getElementById('dateFilter').addEventListener('change', e => { selectedDate = e.target.value; renderLessons(); });
-        document.getElementById('clearDate').addEventListener('click', () => { document.getElementById('dateFilter').value = ''; selectedDate = ''; renderLessons(); });
-        document.querySelectorAll('.grade-tab').forEach(tab => tab.addEventListener('click', () => setGrade(parseInt(tab.dataset.grade))));
-
-        document.getElementById('darkToggle').addEventListener('click', () => {
-            const isDark = document.body.hasAttribute('data-theme');
-            if (isDark) { document.body.removeAttribute('data-theme'); localStorage.setItem('theme', 'light'); document.getElementById('darkToggle').textContent = '🌙'; }
-            else { document.body.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); document.getElementById('darkToggle').textContent = '☀️'; }
+        document.getElementById('downloadCancel').addEventListener('click', () => 
+            document.getElementById('downloadOverlay').classList.remove('active')
+        );
+        
+        document.getElementById('downloadOverlay').addEventListener('click', e => {
+            if (e.target === e.currentTarget) e.currentTarget.classList.remove('active');
         });
 
-        document.getElementById('helpBtn').addEventListener('click', () => document.getElementById('modalOverlay').classList.add('active'));
-        document.getElementById('modalClose').addEventListener('click', () => document.getElementById('modalOverlay').classList.remove('active'));
-        document.getElementById('modalOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) e.currentTarget.classList.remove('active'); });
-        document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => { setLanguage(btn.dataset.lang); document.getElementById('langPopup').classList.add('hidden'); }));
-        document.getElementById('changeLangBtn').addEventListener('click', () => document.getElementById('langPopup').classList.remove('hidden'));
+        document.getElementById('dateFilter').addEventListener('change', e => {
+            selectedDate = e.target.value;
+            renderLessons();
+        });
 
-        // Logout button
+        document.getElementById('clearDate').addEventListener('click', () => {
+            document.getElementById('dateFilter').value = '';
+            selectedDate = '';
+            renderLessons();
+        });
+
+        document.querySelectorAll('.grade-tab').forEach(tab => 
+            tab.addEventListener('click', () => setGrade(parseInt(tab.dataset.grade)))
+        );
+
+        document.getElementById('helpBtn').addEventListener('click', () => 
+            document.getElementById('modalOverlay').classList.add('active')
+        );
+        
+        document.getElementById('modalClose').addEventListener('click', () => 
+            document.getElementById('modalOverlay').classList.remove('active')
+        );
+        
+        document.getElementById('modalOverlay').addEventListener('click', e => {
+            if (e.target === e.currentTarget) e.currentTarget.classList.remove('active');
+        });
+
         document.getElementById('logoutBtn').addEventListener('click', async () => {
             await signOut();
             window.location.reload();
         });
 
-        // Override auth state change handler
+        // Auth state handler
         handleAuthStateChange = function() {
             const userInfo = document.getElementById('userInfo');
             const loginLink = document.getElementById('loginLink');
             const adminLink = document.getElementById('adminLink');
+            const logoutBtn = document.getElementById('logoutBtn');
             const userName = document.getElementById('userName');
             
             if (currentUser && userProfile) {
-                // Check if profile needs completion (OAuth users)
                 if (needsProfileCompletion()) {
                     window.location.href = 'complete-profile.html';
                     return;
                 }
                 
-                userInfo.style.display = 'flex';
+                userInfo.style.display = 'block';
                 loginLink.style.display = 'none';
+                logoutBtn.style.display = '';
                 userName.textContent = userProfile.student_name || currentUser.email;
                 
                 if (isAdmin()) {
                     adminLink.style.display = '';
-                    allowedGrades = [5, 6, 7]; // Admin sees all
+                    allowedGrades = [5, 6, 7];
                 } else {
                     adminLink.style.display = 'none';
                     allowedGrades = getAllowedGradeLevels();
@@ -1266,6 +851,8 @@
             } else {
                 userInfo.style.display = 'none';
                 loginLink.style.display = '';
+                logoutBtn.style.display = 'none';
+                adminLink.style.display = 'none';
                 allowedGrades = [];
             }
             
@@ -1273,20 +860,8 @@
             renderLessons();
         };
 
-        if (localStorage.getItem('theme') === 'dark') { document.body.setAttribute('data-theme', 'dark'); document.getElementById('darkToggle').textContent = '☀️'; }
-        
-        // Show language popup only on first visit
-        const savedLang = localStorage.getItem('lang');
-        if (savedLang) {
-            setLanguage(savedLang);
-        } else {
-            document.getElementById('langPopup').classList.remove('hidden');
-            setLanguage('ar');
-        }
-        
-        // Initialize auth
+        // Initialize
         initAuth();
     </script>
 </body>
-
 </html>

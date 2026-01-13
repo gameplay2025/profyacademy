@@ -5,7 +5,9 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 // Initialize Supabase client
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Auth state
+// Auth state (exposed globally for HTML pages)
+window.currentUser = null;
+window.userProfile = null;
 let currentUser = null;
 let userProfile = null;
 
@@ -14,6 +16,7 @@ async function initAuth() {
     const { data: { session } } = await supabase.auth.getSession();
     if (session) {
         currentUser = session.user;
+        window.currentUser = currentUser;
         await loadUserProfile();
     }
     
@@ -21,11 +24,14 @@ async function initAuth() {
     supabase.auth.onAuthStateChange(async (event, session) => {
         if (event === 'SIGNED_IN' && session) {
             currentUser = session.user;
+            window.currentUser = currentUser;
             await loadUserProfile();
             handleAuthStateChange();
         } else if (event === 'SIGNED_OUT') {
             currentUser = null;
             userProfile = null;
+            window.currentUser = null;
+            window.userProfile = null;
             handleAuthStateChange();
         }
     });
@@ -49,6 +55,7 @@ async function loadUserProfile() {
     }
     
     userProfile = data;
+    window.userProfile = userProfile;
     return data;
 }
 
@@ -208,6 +215,7 @@ async function updateProfileAfterOAuth(studentName, gradeLevels) {
     
     if (error) throw error;
     userProfile = data;
+    window.userProfile = userProfile;
     return data;
 }
 
@@ -215,3 +223,21 @@ async function updateProfileAfterOAuth(studentName, gradeLevels) {
 function needsProfileCompletion() {
     return userProfile && (!userProfile.student_name || userProfile.grade_levels.length === 0);
 }
+
+// Export functions to window for use in HTML pages
+window.initAuth = initAuth;
+window.signUpWithEmail = signUpWithEmail;
+window.signInWithEmail = signInWithEmail;
+window.signInWithGoogle = signInWithGoogle;
+window.signOut = signOut;
+window.isAdmin = isAdmin;
+window.isApproved = isApproved;
+window.getAllowedGradeLevels = getAllowedGradeLevels;
+window.getPendingUsers = getPendingUsers;
+window.getAllUsers = getAllUsers;
+window.approveUser = approveUser;
+window.rejectUser = rejectUser;
+window.updateUserGradeLevels = updateUserGradeLevels;
+window.updateProfileAfterOAuth = updateProfileAfterOAuth;
+window.needsProfileCompletion = needsProfileCompletion;
+window.loadUserProfile = loadUserProfile;
