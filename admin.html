@@ -395,7 +395,72 @@
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="auth.js"></script>
+    <script>
+        // Supabase Configuration - INLINE
+        const SUPABASE_URL = 'https://iztiuutsakynooqiqxth.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml6dGl1dXRzYWt5bm9vcWlxeHRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgyMjM0NjcsImV4cCI6MjA4Mzc5OTQ2N30.HawCEq7CezBOrAdXSVgTnX0s4x-oiDP_JviMGvNJ2ok';
+        
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        var currentUser = null;
+        var userProfile = null;
+        
+        async function initAuth() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) {
+                currentUser = session.user;
+                await loadUserProfile();
+            }
+            supabaseClient.auth.onAuthStateChange(async (event, session) => {
+                if (event === 'SIGNED_IN' && session) {
+                    currentUser = session.user;
+                    await loadUserProfile();
+                    if (typeof handleAuthStateChange === 'function') handleAuthStateChange();
+                } else if (event === 'SIGNED_OUT') {
+                    currentUser = null;
+                    userProfile = null;
+                    if (typeof handleAuthStateChange === 'function') handleAuthStateChange();
+                }
+            });
+            if (typeof handleAuthStateChange === 'function') handleAuthStateChange();
+        }
+        
+        async function loadUserProfile() {
+            if (!currentUser) return null;
+            const { data, error } = await supabaseClient.from('user_profiles').select('*').eq('id', currentUser.id).single();
+            if (error) { console.error('Error loading profile:', error); return null; }
+            userProfile = data;
+            return data;
+        }
+        
+        async function signOut() {
+            const { error } = await supabaseClient.auth.signOut();
+            if (error) throw error;
+        }
+        
+        function isAdmin() { return userProfile?.role === 'admin'; }
+        function isApproved() { return userProfile?.is_approved === true; }
+        
+        async function getAllUsers() {
+            if (!isAdmin()) throw new Error('Unauthorized');
+            const { data, error } = await supabaseClient.from('user_profiles').select('*').order('created_at', { ascending: false });
+            if (error) throw error;
+            return data;
+        }
+        
+        async function approveUser(userId) {
+            if (!isAdmin()) throw new Error('Unauthorized');
+            const { data, error } = await supabaseClient.from('user_profiles').update({ is_approved: true }).eq('id', userId).select().single();
+            if (error) throw error;
+            return data;
+        }
+        
+        async function rejectUser(userId) {
+            if (!isAdmin()) throw new Error('Unauthorized');
+            const { error } = await supabaseClient.from('user_profiles').delete().eq('id', userId);
+            if (error) throw error;
+        }
+    </script>
     <script>
         const gradeNames = { 5: 'السنة الخامسة', 6: 'السنة السادسة', 7: 'السنة السابعة' };
         
