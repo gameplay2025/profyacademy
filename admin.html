@@ -25,9 +25,7 @@
             --radius-sm: 10px;
             --font: 'Cairo', sans-serif;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
             font-family: var(--font);
             background: var(--beige-light);
@@ -35,7 +33,6 @@
             min-height: 100vh;
             line-height: 1.6;
         }
-
         .header {
             background: var(--white);
             border-bottom: 3px solid var(--yellow);
@@ -43,9 +40,8 @@
             top: 0;
             z-index: 100;
         }
-
         .header-inner {
-            max-width: 1300px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 16px 24px;
             display: flex;
@@ -54,26 +50,10 @@
             gap: 20px;
             flex-wrap: wrap;
         }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
+        .header-left { display: flex; align-items: center; gap: 16px; }
         .logo { height: 50px; }
-
-        .header-title {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--primary);
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 10px;
-        }
-
+        .header-title { font-size: 20px; font-weight: 800; color: var(--primary); }
+        .header-actions { display: flex; gap: 10px; }
         .btn {
             padding: 10px 20px;
             border: 2px solid var(--primary);
@@ -90,35 +70,20 @@
             align-items: center;
             gap: 6px;
         }
-
-        .btn:hover {
-            background: var(--primary);
-            color: var(--white);
-        }
-
-        .btn-danger {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        .btn-danger:hover {
-            background: var(--accent);
-            color: var(--white);
-        }
-
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 30px 24px;
-        }
-
+        .btn:hover { background: var(--primary); color: var(--white); }
+        .btn-primary { background: var(--primary); color: var(--white); }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-danger { border-color: var(--accent); color: var(--accent); }
+        .btn-danger:hover { background: var(--accent); color: var(--white); }
+        .btn-success { border-color: var(--success); color: var(--success); }
+        .btn-success:hover { background: var(--success); color: var(--white); }
+        .container { max-width: 1400px; margin: 0 auto; padding: 30px 24px; }
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
-
         .stat-card {
             background: var(--white);
             border-radius: var(--radius);
@@ -129,10 +94,9 @@
             gap: 16px;
             border-top: 4px solid var(--primary);
         }
-
         .stat-card.pending { border-top-color: var(--warning); }
         .stat-card.approved { border-top-color: var(--success); }
-
+        .stat-card.admin { border-top-color: var(--accent); }
         .stat-icon {
             width: 50px;
             height: 50px;
@@ -143,19 +107,9 @@
             font-size: 24px;
             background: var(--beige-light);
         }
-
-        .stat-info h3 {
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--primary);
-        }
-
-        .stat-info p {
-            color: var(--text-muted);
-            font-size: 13px;
-        }
-
-        .tabs {
+        .stat-info h3 { font-size: 28px; font-weight: 800; color: var(--primary); }
+        .stat-info p { color: var(--text-muted); font-size: 13px; }
+        .main-tabs {
             display: flex;
             gap: 8px;
             margin-bottom: 20px;
@@ -164,10 +118,10 @@
             border-radius: var(--radius-sm);
             width: fit-content;
             box-shadow: var(--shadow);
+            flex-wrap: wrap;
         }
-
-        .tab {
-            padding: 10px 24px;
+        .main-tab {
+            padding: 12px 24px;
             border: none;
             border-radius: 8px;
             background: transparent;
@@ -177,33 +131,39 @@
             cursor: pointer;
             transition: all 0.3s;
             font-family: var(--font);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-
-        .tab.active {
-            background: var(--primary);
-            color: var(--white);
+        .main-tab.active { background: var(--primary); color: var(--white); }
+        .main-tab .badge {
+            background: var(--accent);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
         }
-
-        .users-section {
+        .main-tab.active .badge { background: var(--yellow); color: var(--text); }
+        .section { display: none; }
+        .section.active { display: block; }
+        .card {
             background: var(--white);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             overflow: hidden;
+            margin-bottom: 20px;
         }
-
-        .section-header {
+        .card-header {
             padding: 18px 24px;
             border-bottom: 1px solid var(--beige);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
         }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .users-list { padding: 0; }
-
+        .card-title { font-size: 18px; font-weight: 700; color: var(--primary); }
+        .card-body { padding: 0; }
         .user-card {
             padding: 18px 24px;
             border-bottom: 1px solid var(--beige-light);
@@ -214,30 +174,12 @@
             flex-wrap: wrap;
             transition: background 0.3s;
         }
-
         .user-card:hover { background: var(--beige-light); }
         .user-card:last-child { border-bottom: none; }
-
         .user-info { flex: 1; min-width: 180px; }
-
-        .user-name {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 2px;
-        }
-
-        .user-email {
-            color: var(--text-muted);
-            font-size: 13px;
-            margin-bottom: 6px;
-        }
-
-        .user-grades {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-
+        .user-name { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+        .user-email { color: var(--text-muted); font-size: 13px; margin-bottom: 6px; }
+        .user-grades { display: flex; gap: 6px; flex-wrap: wrap; }
         .grade-badge {
             padding: 3px 10px;
             background: var(--primary);
@@ -246,34 +188,11 @@
             font-size: 11px;
             font-weight: 600;
         }
-
-        .user-status {
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .status-pending {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--warning);
-        }
-
-        .status-approved {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-        }
-
-        .status-admin {
-            background: rgba(30, 69, 159, 0.1);
-            color: var(--primary);
-        }
-
-        .user-actions {
-            display: flex;
-            gap: 8px;
-        }
-
+        .user-status { padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .status-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .status-approved { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .status-admin { background: rgba(30, 69, 159, 0.1); color: var(--primary); }
+        .user-actions { display: flex; gap: 8px; }
         .action-btn {
             padding: 8px 16px;
             border: none;
@@ -284,48 +203,194 @@
             font-family: var(--font);
             transition: all 0.3s;
         }
-
-        .action-btn.approve {
-            background: var(--success);
-            color: var(--white);
-        }
-
+        .action-btn.approve { background: var(--success); color: var(--white); }
         .action-btn.approve:hover { background: #059669; }
-
-        .action-btn.reject {
-            background: var(--accent);
-            color: var(--white);
-        }
-
+        .action-btn.reject { background: var(--accent); color: var(--white); }
         .action-btn.reject:hover { background: #b91c1c; }
-
         .empty-state {
             padding: 50px 20px;
             text-align: center;
             color: var(--text-muted);
         }
-
-        .empty-state::before {
-            content: '📋';
-            display: block;
-            font-size: 40px;
+        .empty-state::before { content: '📋'; display: block; font-size: 40px; margin-bottom: 12px; }
+        .loading { text-align: center; padding: 40px; color: var(--text-muted); }
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: var(--white);
+            border-radius: var(--radius);
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--beige);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-title { font-size: 20px; font-weight: 700; color: var(--primary); }
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: var(--beige);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--text-muted);
+            transition: all 0.3s;
+        }
+        .modal-close:hover { background: var(--accent); color: var(--white); }
+        .modal-body { padding: 24px; }
+        .form-group { margin-bottom: 18px; }
+        .form-label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 14px; }
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--beige);
+            border-radius: var(--radius-sm);
+            background: var(--white);
+            color: var(--text);
+            font-size: 15px;
+            font-family: var(--font);
+            transition: all 0.3s;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .form-textarea { min-height: 100px; resize: vertical; }
+        /* Password Input with Eye Icon */
+        .password-wrapper {
+            position: relative;
+        }
+        .password-wrapper .form-input {
+            padding-left: 45px;
+        }
+        .password-toggle {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 18px;
+            padding: 5px;
+            transition: color 0.3s;
+        }
+        .password-toggle:hover { color: var(--primary); }
+        /* Content Cards */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .content-card {
+            background: var(--beige-light);
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            border: 1px solid var(--beige);
+        }
+        .content-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             margin-bottom: 12px;
         }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: var(--text-muted);
+        .content-card-title { font-size: 16px; font-weight: 700; color: var(--primary); }
+        .content-card-grade {
+            padding: 4px 12px;
+            background: var(--primary);
+            color: white;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
         }
-
-        #pendingSection, #allUsersSection { display: none; }
-        #pendingSection.active, #allUsersSection.active { display: block; }
-
+        .content-card-date { color: var(--text-muted); font-size: 13px; margin-bottom: 12px; }
+        .content-card-links { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
+        .content-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+            word-break: break-all;
+        }
+        .content-link.has-link { color: var(--success); }
+        .content-card-actions { display: flex; gap: 8px; }
+        .content-card-actions .action-btn { flex: 1; text-align: center; }
+        .action-btn.edit { background: var(--primary); color: white; }
+        .action-btn.delete { background: var(--accent); color: white; }
+        /* Grade Checkboxes */
+        .grade-checkboxes { display: flex; flex-wrap: wrap; gap: 8px; }
+        .grade-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 16px;
+            border: 2px solid var(--beige);
+            border-radius: var(--radius-sm);
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            user-select: none;
+        }
+        .grade-checkbox:hover { border-color: var(--primary); }
+        .grade-checkbox.selected {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--white);
+        }
+        .grade-checkbox input { display: none; }
+        .message {
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 18px;
+            font-size: 14px;
+            display: none;
+        }
+        .message.error {
+            display: block;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--error);
+            color: var(--error);
+        }
+        .message.success {
+            display: block;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
         @media (max-width: 768px) {
             .header-inner { justify-content: center; }
             .user-card { flex-direction: column; align-items: flex-start; }
             .user-actions { width: 100%; }
             .action-btn { flex: 1; }
+            .main-tabs { width: 100%; }
+            .main-tab { flex: 1; justify-content: center; padding: 10px 12px; font-size: 12px; }
+            .content-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -342,7 +407,6 @@
             </div>
         </div>
     </header>
-    
     <div class="container">
         <div class="stats-grid">
             <div class="stat-card">
@@ -366,37 +430,172 @@
                     <p>مستخدمين معتمدين</p>
                 </div>
             </div>
-        </div>
-        
-        <div class="tabs">
-            <button class="tab active" data-tab="pending">في انتظار الموافقة</button>
-            <button class="tab" data-tab="all">جميع المستخدمين</button>
-        </div>
-        
-        <div class="users-section">
-            <div id="pendingSection" class="active">
-                <div class="section-header">
-                    <h2 class="section-title">طلبات الانتظار</h2>
+            <div class="stat-card admin">
+                <div class="stat-icon">👑</div>
+                <div class="stat-info">
+                    <h3 id="adminUsers">0</h3>
+                    <p>المسؤولين</p>
                 </div>
-                <div class="users-list" id="pendingList">
+            </div>
+        </div>
+        
+        <div class="main-tabs">
+            <button class="main-tab active" data-section="pending">
+                <span>⏳</span> طلبات الانتظار
+                <span class="badge" id="pendingBadge">0</span>
+            </button>
+            <button class="main-tab" data-section="users">
+                <span>👥</span> جميع المستخدمين
+            </button>
+            <button class="main-tab" data-section="admins">
+                <span>👑</span> إدارة المسؤولين
+            </button>
+            <button class="main-tab" data-section="content">
+                <span>📚</span> إدارة المحتوى
+            </button>
+        </div>
+        <!-- Pending Users Section -->
+        <div id="pendingSection" class="section active">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">طلبات الانتظار</h2>
+                </div>
+                <div class="card-body" id="pendingList">
                     <div class="loading">جاري التحميل...</div>
                 </div>
             </div>
-            
-            <div id="allUsersSection">
-                <div class="section-header">
-                    <h2 class="section-title">جميع المستخدمين</h2>
+        </div>
+
+        <!-- All Users Section -->
+        <div id="usersSection" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">جميع المستخدمين</h2>
                 </div>
-                <div class="users-list" id="allUsersList">
+                <div class="card-body" id="allUsersList">
                     <div class="loading">جاري التحميل...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admins Section -->
+        <div id="adminsSection" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">المسؤولين</h2>
+                    <button class="btn btn-primary" onclick="openAddAdminModal()">
+                        <span>➕</span> إضافة مسؤول جديد
+                    </button>
+                </div>
+                <div class="card-body" id="adminsList">
+                    <div class="loading">جاري التحميل...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <div id="contentSection" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">إدارة المحتوى</h2>
+                    <button class="btn btn-primary" onclick="openAddContentModal()">
+                        <span>➕</span> إضافة محتوى جديد
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="content-grid" id="contentList">
+                        <div class="loading">جاري التحميل...</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    
+    <!-- Add Admin Modal -->
+    <div class="modal-overlay" id="addAdminModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">إضافة مسؤول جديد</h3>
+                <button class="modal-close" onclick="closeModal('addAdminModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="adminMessage" class="message"></div>
+                <form id="addAdminForm">
+                    <div class="form-group">
+                        <label class="form-label">اسم المسؤول</label>
+                        <input type="text" class="form-input" id="adminName" required placeholder="أدخل اسم المسؤول">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">البريد الإلكتروني</label>
+                        <input type="email" class="form-input" id="adminEmail" required placeholder="example@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">كلمة المرور</label>
+                        <div class="password-wrapper">
+                            <input type="password" class="form-input" id="adminPassword" required placeholder="••••••••" minlength="6">
+                            <button type="button" class="password-toggle" onclick="togglePassword('adminPassword', this)">👁</button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">إنشاء حساب المسؤول</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Content Modal -->
+    <div class="modal-overlay" id="contentModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="contentModalTitle">إضافة محتوى جديد</h3>
+                <button class="modal-close" onclick="closeModal('contentModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="contentMessage" class="message"></div>
+                <form id="contentForm">
+                    <input type="hidden" id="contentId">
+                    <div class="form-group">
+                        <label class="form-label">عنوان الدرس</label>
+                        <input type="text" class="form-input" id="contentTitle" required placeholder="أدخل عنوان الدرس">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">المستوى الدراسي</label>
+                        <select class="form-select" id="contentGrade" required>
+                            <option value="">اختر المستوى</option>
+                            <option value="5">السنة الخامسة</option>
+                            <option value="6">السنة السادسة</option>
+                            <option value="7">السنة السابعة</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">تاريخ الدرس</label>
+                        <input type="date" class="form-input" id="contentDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">رابط فيديو YouTube</label>
+                        <input type="url" class="form-input" id="contentYoutube" placeholder="https://youtube.com/watch?v=...">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">رابط العمل (تحميل)</label>
+                        <input type="url" class="form-input" id="contentWork" placeholder="رابط تحميل العمل">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">رابط الإصلاح (تحميل)</label>
+                        <input type="url" class="form-input" id="contentCorrection" placeholder="رابط تحميل الإصلاح">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">رابط العمل (فيسبوك)</label>
+                        <input type="url" class="form-input" id="contentFbWork" placeholder="رابط فيسبوك للعمل">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">رابط الإصلاح (فيسبوك)</label>
+                        <input type="url" class="form-input" id="contentFbCorrection" placeholder="رابط فيسبوك للإصلاح">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;" id="contentSubmitBtn">حفظ المحتوى</button>
+                </form>
+            </div>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Supabase Configuration - INLINE
         const SUPABASE_URL = 'https://iztiuutsakynooqiqxth.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml6dGl1dXRzYWt5bm9vcWlxeHRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgyMjM0NjcsImV4cCI6MjA4Mzc5OTQ2N30.HawCEq7CezBOrAdXSVgTnX0s4x-oiDP_JviMGvNJ2ok';
         
@@ -439,7 +638,6 @@
         }
         
         function isAdmin() { return userProfile?.role === 'admin'; }
-        function isApproved() { return userProfile?.is_approved === true; }
         
         async function getAllUsers() {
             if (!isAdmin()) throw new Error('Unauthorized');
@@ -463,13 +661,16 @@
     </script>
     <script>
         const gradeNames = { 5: 'السنة الخامسة', 6: 'السنة السادسة', 7: 'السنة السابعة' };
+        let allUsers = [];
+        let allContent = [];
         
-        document.querySelectorAll('.tab').forEach(tab => {
+        // Tab switching
+        document.querySelectorAll('.main-tab').forEach(tab => {
             tab.addEventListener('click', () => {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
-                document.getElementById('pendingSection').classList.toggle('active', tab.dataset.tab === 'pending');
-                document.getElementById('allUsersSection').classList.toggle('active', tab.dataset.tab === 'all');
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                document.getElementById(tab.dataset.section + 'Section').classList.add('active');
             });
         });
         
@@ -478,6 +679,66 @@
             window.location.href = 'login.html';
         });
         
+        // Password toggle
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                btn.textContent = '👁';
+            }
+        }
+        
+        // Modal functions
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+        }
+        
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+        
+        function openAddAdminModal() {
+            document.getElementById('addAdminForm').reset();
+            document.getElementById('adminMessage').className = 'message';
+            openModal('addAdminModal');
+        }
+        
+        function openAddContentModal() {
+            document.getElementById('contentForm').reset();
+            document.getElementById('contentId').value = '';
+            document.getElementById('contentModalTitle').textContent = 'إضافة محتوى جديد';
+            document.getElementById('contentSubmitBtn').textContent = 'حفظ المحتوى';
+            document.getElementById('contentMessage').className = 'message';
+            document.getElementById('contentDate').value = new Date().toISOString().split('T')[0];
+            openModal('contentModal');
+        }
+        
+        function openEditContentModal(content) {
+            document.getElementById('contentId').value = content.id;
+            document.getElementById('contentTitle').value = content.title;
+            document.getElementById('contentGrade').value = content.grade_level;
+            document.getElementById('contentDate').value = content.lesson_date;
+            document.getElementById('contentYoutube').value = content.youtube_url || '';
+            document.getElementById('contentWork').value = content.work_url || '';
+            document.getElementById('contentCorrection').value = content.correction_url || '';
+            document.getElementById('contentFbWork').value = content.fb_work_url || '';
+            document.getElementById('contentFbCorrection').value = content.fb_correction_url || '';
+            document.getElementById('contentModalTitle').textContent = 'تعديل المحتوى';
+            document.getElementById('contentSubmitBtn').textContent = 'تحديث المحتوى';
+            document.getElementById('contentMessage').className = 'message';
+            openModal('contentModal');
+        }
+        
+        // Close modals on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', e => {
+                if (e.target === overlay) overlay.classList.remove('active');
+            });
+        });
+        // Render functions
         function renderUserCard(user, showActions = true) {
             const grades = (user.grade_levels || []).map(g => `<span class="grade-badge">${gradeNames[g] || g}</span>`).join('');
             let status = '';
@@ -510,30 +771,92 @@
             `;
         }
         
+        function renderContentCard(content) {
+            const hasYoutube = content.youtube_url ? 'has-link' : '';
+            const hasWork = content.work_url ? 'has-link' : '';
+            const hasCorrection = content.correction_url ? 'has-link' : '';
+            
+            return `
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <div class="content-card-title">${content.title}</div>
+                        <span class="content-card-grade">${gradeNames[content.grade_level]}</span>
+                    </div>
+                    <div class="content-card-date">📅 ${content.lesson_date}</div>
+                    <div class="content-card-links">
+                        <div class="content-link ${hasYoutube}">🎥 ${content.youtube_url ? 'فيديو متوفر' : 'لا يوجد فيديو'}</div>
+                        <div class="content-link ${hasWork}">📄 ${content.work_url ? 'عمل متوفر' : 'لا يوجد عمل'}</div>
+                        <div class="content-link ${hasCorrection}">✅ ${content.correction_url ? 'إصلاح متوفر' : 'لا يوجد إصلاح'}</div>
+                    </div>
+                    <div class="content-card-actions">
+                        <button class="action-btn edit" onclick='openEditContentModal(${JSON.stringify(content).replace(/'/g, "\\'")})'>✏️ تعديل</button>
+                        <button class="action-btn delete" onclick="handleDeleteContent('${content.id}')">🗑️ حذف</button>
+                    </div>
+                </div>
+            `;
+        }
+        // Load data
         async function loadData() {
             try {
-                const allUsers = await getAllUsers();
+                allUsers = await getAllUsers();
                 const pending = allUsers.filter(u => !u.is_approved && u.role !== 'admin');
-                const approved = allUsers.filter(u => u.is_approved || u.role === 'admin');
+                const approved = allUsers.filter(u => u.is_approved && u.role !== 'admin');
+                const admins = allUsers.filter(u => u.role === 'admin');
                 
+                // Update stats
                 document.getElementById('totalUsers').textContent = allUsers.length;
                 document.getElementById('pendingUsers').textContent = pending.length;
                 document.getElementById('approvedUsers').textContent = approved.length;
+                document.getElementById('adminUsers').textContent = admins.length;
+                document.getElementById('pendingBadge').textContent = pending.length;
                 
+                // Render pending users
                 const pendingList = document.getElementById('pendingList');
                 pendingList.innerHTML = pending.length === 0 
                     ? '<div class="empty-state">لا توجد طلبات في الانتظار</div>'
                     : pending.map(u => renderUserCard(u, true)).join('');
                 
+                // Render all users
                 const allUsersList = document.getElementById('allUsersList');
                 allUsersList.innerHTML = allUsers.length === 0 
                     ? '<div class="empty-state">لا يوجد مستخدمين</div>'
                     : allUsers.map(u => renderUserCard(u, false)).join('');
+                
+                // Render admins
+                const adminsList = document.getElementById('adminsList');
+                adminsList.innerHTML = admins.length === 0 
+                    ? '<div class="empty-state">لا يوجد مسؤولين</div>'
+                    : admins.map(u => renderUserCard(u, false)).join('');
+                
             } catch (error) {
                 console.error('Error loading data:', error);
             }
         }
         
+        async function loadContent() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('content')
+                    .select('*')
+                    .order('lesson_date', { ascending: false });
+                
+                if (error) {
+                    console.log('Content table may not exist:', error);
+                    document.getElementById('contentList').innerHTML = '<div class="empty-state">جدول المحتوى غير موجود بعد. قم بتشغيل الترحيل أولاً.</div>';
+                    return;
+                }
+                
+                allContent = data || [];
+                const contentList = document.getElementById('contentList');
+                contentList.innerHTML = allContent.length === 0 
+                    ? '<div class="empty-state">لا يوجد محتوى. أضف محتوى جديد!</div>'
+                    : allContent.map(c => renderContentCard(c)).join('');
+                    
+            } catch (error) {
+                console.error('Error loading content:', error);
+            }
+        }
+        // Action handlers
         async function handleApprove(userId) {
             try {
                 await approveUser(userId);
@@ -554,6 +877,124 @@
             }
         }
         
+        // Add Admin Form
+        document.getElementById('addAdminForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const msgBox = document.getElementById('adminMessage');
+            const name = document.getElementById('adminName').value;
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            try {
+                // Create admin user
+                const { data, error } = await supabaseClient.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        data: {
+                            student_name: name,
+                            grade_levels: [5, 6, 7],
+                            role: 'admin',
+                            is_approved: true
+                        }
+                    }
+                });
+                
+                if (error) throw error;
+                
+                // Update the profile to be admin
+                if (data.user) {
+                    const { error: updateError } = await supabaseClient
+                        .from('user_profiles')
+                        .update({ role: 'admin', is_approved: true })
+                        .eq('id', data.user.id);
+                    
+                    if (updateError) console.error('Update error:', updateError);
+                }
+                
+                msgBox.textContent = 'تم إنشاء حساب المسؤول بنجاح!';
+                msgBox.className = 'message success';
+                
+                setTimeout(() => {
+                    closeModal('addAdminModal');
+                    loadData();
+                }, 1500);
+                
+            } catch (error) {
+                msgBox.textContent = error.message || 'حدث خطأ';
+                msgBox.className = 'message error';
+            }
+        });
+        // Content Form
+        document.getElementById('contentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const msgBox = document.getElementById('contentMessage');
+            const contentId = document.getElementById('contentId').value;
+            
+            const contentData = {
+                title: document.getElementById('contentTitle').value,
+                grade_level: parseInt(document.getElementById('contentGrade').value),
+                lesson_date: document.getElementById('contentDate').value,
+                youtube_url: document.getElementById('contentYoutube').value || null,
+                work_url: document.getElementById('contentWork').value || null,
+                correction_url: document.getElementById('contentCorrection').value || null,
+                fb_work_url: document.getElementById('contentFbWork').value || null,
+                fb_correction_url: document.getElementById('contentFbCorrection').value || null,
+                created_by: currentUser.id
+            };
+            
+            try {
+                let result;
+                if (contentId) {
+                    // Update existing
+                    result = await supabaseClient
+                        .from('content')
+                        .update(contentData)
+                        .eq('id', contentId)
+                        .select()
+                        .single();
+                } else {
+                    // Insert new
+                    result = await supabaseClient
+                        .from('content')
+                        .insert(contentData)
+                        .select()
+                        .single();
+                }
+                
+                if (result.error) throw result.error;
+                
+                msgBox.textContent = contentId ? 'تم تحديث المحتوى بنجاح!' : 'تم إضافة المحتوى بنجاح!';
+                msgBox.className = 'message success';
+                
+                setTimeout(() => {
+                    closeModal('contentModal');
+                    loadContent();
+                }, 1000);
+                
+            } catch (error) {
+                msgBox.textContent = error.message || 'حدث خطأ';
+                msgBox.className = 'message error';
+            }
+        });
+        
+        async function handleDeleteContent(contentId) {
+            if (confirm('هل أنت متأكد من حذف هذا المحتوى؟')) {
+                try {
+                    const { error } = await supabaseClient
+                        .from('content')
+                        .delete()
+                        .eq('id', contentId);
+                    
+                    if (error) throw error;
+                    loadContent();
+                } catch (error) {
+                    alert('حدث خطأ: ' + error.message);
+                }
+            }
+        }
+        
+        // Auth state handler
         handleAuthStateChange = function() {
             if (!currentUser) {
                 window.location.href = 'login.html';
@@ -565,6 +1006,7 @@
             }
             if (userProfile && isAdmin()) {
                 loadData();
+                loadContent();
             }
         };
         

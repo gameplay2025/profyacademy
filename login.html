@@ -24,9 +24,7 @@
             --radius-sm: 10px;
             --font: 'Cairo', sans-serif;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
             font-family: var(--font);
             background: var(--beige-light);
@@ -37,7 +35,6 @@
             justify-content: center;
             padding: 20px;
         }
-
         .auth-container {
             background: var(--white);
             border-radius: var(--radius);
@@ -47,29 +44,10 @@
             box-shadow: var(--shadow);
             border-top: 4px solid var(--yellow);
         }
-
-        .logo {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
+        .logo { text-align: center; margin-bottom: 24px; }
         .logo img { height: 70px; }
-
-        .auth-title {
-            text-align: center;
-            font-size: 26px;
-            font-weight: 800;
-            margin-bottom: 6px;
-            color: var(--primary);
-        }
-
-        .auth-subtitle {
-            text-align: center;
-            color: var(--text-muted);
-            margin-bottom: 28px;
-            font-size: 15px;
-        }
-
+        .auth-title { text-align: center; font-size: 26px; font-weight: 800; margin-bottom: 6px; color: var(--primary); }
+        .auth-subtitle { text-align: center; color: var(--text-muted); margin-bottom: 28px; font-size: 15px; }
         .tabs {
             display: flex;
             gap: 8px;
@@ -78,7 +56,6 @@
             padding: 5px;
             border-radius: var(--radius-sm);
         }
-
         .tab {
             flex: 1;
             padding: 12px;
@@ -92,22 +69,9 @@
             transition: all 0.3s;
             font-family: var(--font);
         }
-
-        .tab.active {
-            background: var(--primary);
-            color: var(--white);
-        }
-
+        .tab.active { background: var(--primary); color: var(--white); }
         .form-group { margin-bottom: 18px; }
-
-        .form-label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            font-size: 14px;
-            color: var(--text);
-        }
-
+        .form-label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 14px; color: var(--text); }
         .form-input {
             width: 100%;
             padding: 14px 16px;
@@ -119,18 +83,26 @@
             font-family: var(--font);
             transition: all 0.3s;
         }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
+        .form-input:focus { outline: none; border-color: var(--primary); }
+        /* Password Input with Eye Icon */
+        .password-wrapper { position: relative; }
+        .password-wrapper .form-input { padding-left: 45px; }
+        .password-toggle {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 18px;
+            padding: 5px;
+            transition: color 0.3s;
         }
-
-        .grade-checkboxes {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
+        .password-toggle:hover { color: var(--primary); }
+        /* Fixed Grade Checkboxes */
+        .grade-checkboxes { display: flex; flex-wrap: wrap; gap: 8px; }
         .grade-checkbox {
             display: flex;
             align-items: center;
@@ -142,18 +114,15 @@
             cursor: pointer;
             transition: all 0.3s;
             font-size: 14px;
+            user-select: none;
         }
-
         .grade-checkbox:hover { border-color: var(--primary); }
-
         .grade-checkbox.selected {
             background: var(--primary);
             border-color: var(--primary);
             color: var(--white);
         }
-
         .grade-checkbox input { display: none; }
-
         .btn-primary {
             width: 100%;
             padding: 16px;
@@ -168,16 +137,8 @@
             transition: all 0.3s;
             margin-top: 8px;
         }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
         .divider {
             display: flex;
             align-items: center;
@@ -185,16 +146,13 @@
             color: var(--text-muted);
             font-size: 13px;
         }
-
         .divider::before, .divider::after {
             content: '';
             flex: 1;
             height: 1px;
             background: var(--beige);
         }
-
         .divider span { padding: 0 14px; }
-
         .btn-google {
             width: 100%;
             padding: 14px;
@@ -212,14 +170,8 @@
             justify-content: center;
             gap: 10px;
         }
-
-        .btn-google:hover {
-            border-color: var(--primary);
-            background: var(--beige-light);
-        }
-
+        .btn-google:hover { border-color: var(--primary); background: var(--beige-light); }
         .btn-google img { width: 20px; height: 20px; }
-
         .message {
             padding: 12px 16px;
             border-radius: var(--radius-sm);
@@ -227,36 +179,22 @@
             font-size: 14px;
             display: none;
         }
-
         .message.error {
             display: block;
             background: rgba(239, 68, 68, 0.1);
             border: 1px solid var(--error);
             color: var(--error);
         }
-
         .message.success {
             display: block;
             background: rgba(16, 185, 129, 0.1);
             border: 1px solid var(--success);
             color: var(--success);
         }
-
         #loginForm, #signupForm { display: none; }
         #loginForm.active, #signupForm.active { display: block; }
-
-        .back-link {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .back-link a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
+        .back-link { text-align: center; margin-top: 20px; }
+        .back-link a { color: var(--primary); text-decoration: none; font-weight: 600; font-size: 14px; }
         .back-link a:hover { text-decoration: underline; }
     </style>
 </head>
@@ -282,11 +220,13 @@
             </div>
             <div class="form-group">
                 <label class="form-label">كلمة المرور</label>
-                <input type="password" class="form-input" id="loginPassword" required placeholder="••••••••">
+                <div class="password-wrapper">
+                    <input type="password" class="form-input" id="loginPassword" required placeholder="••••••••">
+                    <button type="button" class="password-toggle" onclick="togglePassword('loginPassword', this)">👁</button>
+                </div>
             </div>
             <button type="submit" class="btn-primary" id="loginBtn">تسجيل الدخول</button>
         </form>
-        
         <form id="signupForm">
             <div class="form-group">
                 <label class="form-label">اسم الطالب</label>
@@ -298,23 +238,23 @@
             </div>
             <div class="form-group">
                 <label class="form-label">كلمة المرور</label>
-                <input type="password" class="form-input" id="signupPassword" required placeholder="••••••••" minlength="6">
+                <div class="password-wrapper">
+                    <input type="password" class="form-input" id="signupPassword" required placeholder="••••••••" minlength="6">
+                    <button type="button" class="password-toggle" onclick="togglePassword('signupPassword', this)">👁</button>
+                </div>
             </div>
             <div class="form-group">
                 <label class="form-label">اختر المستويات الدراسية</label>
-                <div class="grade-checkboxes">
-                    <label class="grade-checkbox" data-grade="5">
-                        <input type="checkbox" value="5">
+                <div class="grade-checkboxes" id="gradeCheckboxes">
+                    <div class="grade-checkbox" data-grade="5">
                         <span>السنة الخامسة</span>
-                    </label>
-                    <label class="grade-checkbox" data-grade="6">
-                        <input type="checkbox" value="6">
+                    </div>
+                    <div class="grade-checkbox" data-grade="6">
                         <span>السنة السادسة</span>
-                    </label>
-                    <label class="grade-checkbox" data-grade="7">
-                        <input type="checkbox" value="7">
+                    </div>
+                    <div class="grade-checkbox" data-grade="7">
                         <span>السنة السابعة</span>
-                    </label>
+                    </div>
                 </div>
             </div>
             <button type="submit" class="btn-primary" id="signupBtn">إنشاء حساب</button>
@@ -331,10 +271,8 @@
             <a href="index.html">← العودة للصفحة الرئيسية</a>
         </div>
     </div>
-    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Supabase Configuration - INLINE
         const SUPABASE_URL = 'https://iztiuutsakynooqiqxth.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml6dGl1dXRzYWt5bm9vcWlxeHRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgyMjM0NjcsImV4cCI6MjA4Mzc5OTQ2N30.HawCEq7CezBOrAdXSVgTnX0s4x-oiDP_JviMGvNJ2ok';
         
@@ -395,18 +333,14 @@
             return data;
         }
         
-        async function signOut() {
-            const { error } = await supabaseClient.auth.signOut();
-            if (error) throw error;
-        }
-        
         function isAdmin() { return userProfile?.role === 'admin'; }
         function isApproved() { return userProfile?.is_approved === true; }
         function needsProfileCompletion() { return userProfile && (!userProfile.student_name || userProfile.grade_levels.length === 0); }
-        
-        console.log('Auth loaded:', typeof signInWithEmail, typeof signInWithGoogle);
     </script>
     <script>
+        // Selected grades storage
+        let selectedGrades = [];
+        
         // Tab switching
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {
@@ -418,13 +352,36 @@
             });
         });
         
-        // Grade checkbox selection
+        // Fixed Grade checkbox selection - using click event properly
         document.querySelectorAll('.grade-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('click', () => {
-                checkbox.classList.toggle('selected');
-                checkbox.querySelector('input').checked = checkbox.classList.contains('selected');
+            checkbox.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const grade = parseInt(this.dataset.grade);
+                const index = selectedGrades.indexOf(grade);
+                
+                if (index > -1) {
+                    selectedGrades.splice(index, 1);
+                    this.classList.remove('selected');
+                } else {
+                    selectedGrades.push(grade);
+                    this.classList.add('selected');
+                }
             });
         });
+        
+        // Password toggle function
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                btn.textContent = '👁';
+            }
+        }
         
         function showMessage(text, type) {
             const box = document.getElementById('messageBox');
@@ -467,14 +424,12 @@
                 const studentName = document.getElementById('studentName').value;
                 const email = document.getElementById('signupEmail').value;
                 const password = document.getElementById('signupPassword').value;
-                const gradeLevels = Array.from(document.querySelectorAll('.grade-checkbox.selected input'))
-                    .map(input => parseInt(input.value));
                 
-                if (gradeLevels.length === 0) {
+                if (selectedGrades.length === 0) {
                     throw new Error('يرجى اختيار مستوى دراسي واحد على الأقل');
                 }
                 
-                await signUpWithEmail(email, password, studentName, gradeLevels);
+                await signUpWithEmail(email, password, studentName, selectedGrades);
                 showMessage('تم إنشاء الحساب بنجاح! يرجى انتظار موافقة المسؤول للوصول إلى المحتوى.', 'success');
                 btn.textContent = 'تم الإنشاء';
             } catch (error) {
